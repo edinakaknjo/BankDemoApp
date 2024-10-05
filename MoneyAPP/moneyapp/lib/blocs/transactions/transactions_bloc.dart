@@ -1,6 +1,6 @@
-import 'dart:convert';
+//import 'dart:convert';
 import 'package:bloc/bloc.dart';
-import 'package:http/http.dart' as http; //had a problem, used wrong embeding
+//import 'package:http/http.dart' as http; //had a problem, used wrong embeding
 import '../../models/transaction_model.dart';
 import 'transactions_event.dart';
 import 'package:logger/logger.dart';
@@ -10,7 +10,7 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
   final Logger logger = Logger(); // Initialize logger
 
   TransactionsBloc()
-      : super(TransactionsState(transactions: [], balance: 15025)) {
+      : super(TransactionsState(transactions: [], balance: 150.25)) {
     on<AddTransaction>(_onAddTransaction);
     on<ApplyForLoan>(_onApplyForLoan); // priv new
   }
@@ -42,9 +42,9 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
       ApplyForLoan event, Emitter<TransactionsState> emit) async {
     emit(state.copyWith(isLoading: true));
 
-    int randomNumber = await getRandomNumber();
+   // int randomNumber = await getRandomNumber();
     bool loanApproved = _checkLoanEligibility(
-      randomNumber,
+    //  randomNumber,
       state.balance,
       event.loanAmount,
       event.term,
@@ -74,7 +74,7 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
           loanApproved: false, isLoading: false)); // Reset loading state
     }
   }
-
+/*
 
 Future<int> getRandomNumber() async {
   final url = Uri.parse('http://www.randomnumberapi.com/api/v1.0/random');
@@ -92,10 +92,10 @@ Future<int> getRandomNumber() async {
   }
 }
 
-
+*/
 
   bool _checkLoanEligibility(
-    int randomNumber,
+//    int randomNumber,
     double accountBalance,
     double loanAmount,
     int term,
@@ -103,7 +103,7 @@ Future<int> getRandomNumber() async {
     double monthlyExpenses,
   ) {
   
-    if (randomNumber <= 50) return false;
+  //  if (randomNumber <= 50) return false;
     if (accountBalance <= 1000) return false; //problem in this page you will see your current balance.... says in .docs
     if (monthlySalary <= 1000) return false;
     if (monthlyExpenses >= (monthlySalary / 3)) return false;

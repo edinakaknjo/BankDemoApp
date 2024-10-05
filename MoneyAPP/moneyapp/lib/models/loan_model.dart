@@ -11,8 +11,8 @@ class Loan {
     required this.term,
   });
 
-  bool isEligible(double accountBalance, int randomNumber) {
-    if (randomNumber <= 50) return false;
+  bool isEligible(double accountBalance) { //, int randomNumber) {
+   // if (randomNumber <= 50) return false;
     if (accountBalance <= 1000) return false;
     if (monthlySalary <= 1000) return false;
     if (monthlyExpenses >= (monthlySalary / 3)) return false;
