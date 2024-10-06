@@ -1,6 +1,6 @@
-//import 'dart:convert';
+import 'dart:convert';
 import 'package:bloc/bloc.dart';
-//import 'package:http/http.dart' as http; //had a problem, used wrong embeding
+import 'package:http/http.dart' as http; //had a problem, used wrong embeding
 import '../../models/transaction_model.dart';
 import 'transactions_event.dart';
 import 'package:logger/logger.dart';
@@ -42,9 +42,9 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
       ApplyForLoan event, Emitter<TransactionsState> emit) async {
     emit(state.copyWith(isLoading: true));
 
-   // int randomNumber = await getRandomNumber();
+    int randomNumber = await getRandomNumber();
     bool loanApproved = _checkLoanEligibility(
-    //  randomNumber,
+      randomNumber,
       state.balance,
       event.loanAmount,
       event.term,
@@ -74,10 +74,9 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
           loanApproved: false, isLoading: false)); // Reset loading state
     }
   }
-/*
 
 Future<int> getRandomNumber() async {
-  final url = Uri.parse('http://www.randomnumberapi.com/api/v1.0/random');
+  final url = Uri.parse('https://api.allorigins.win/get?url=http://www.randomnumberapi.com/api/v1.0/random&cacheBust=${DateTime.now().millisecondsSinceEpoch}');
   final response = await http.get(url);
 
   // Log the response for debugging
@@ -85,17 +84,17 @@ Future<int> getRandomNumber() async {
   logger.i('Response Body: ${response.body}');
 
   if (response.statusCode == 200) {
-    List<int> randomNumber = json.decode(response.body);
-    return randomNumber[0];
+    final jsonData = json.decode(response.body);
+    String contents = jsonData['contents']; 
+    List<dynamic> numbers = json.decode(contents); 
+    return numbers[0]; 
   } else {
     throw Exception('Failed to load random number');
   }
 }
 
-*/
-
   bool _checkLoanEligibility(
-//    int randomNumber,
+    int randomNumber,
     double accountBalance,
     double loanAmount,
     int term,
@@ -103,7 +102,7 @@ Future<int> getRandomNumber() async {
     double monthlyExpenses,
   ) {
   
-  //  if (randomNumber <= 50) return false;
+    if (randomNumber <= 50) return false;
     if (accountBalance <= 1000) return false; //problem in this page you will see your current balance.... says in .docs
     if (monthlySalary <= 1000) return false;
     if (monthlyExpenses >= (monthlySalary / 3)) return false;

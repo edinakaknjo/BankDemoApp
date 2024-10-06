@@ -13,10 +13,8 @@ class LoanPage extends StatefulWidget {
 
 class LoanPageState extends State<LoanPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _monthlySalaryController =
-      TextEditingController();
-  final TextEditingController _monthlyExpensesController =
-      TextEditingController();
+  final TextEditingController _monthlySalaryController = TextEditingController();
+  final TextEditingController _monthlyExpensesController = TextEditingController();
   final TextEditingController _loanAmountController = TextEditingController();
   final TextEditingController _termController = TextEditingController();
   bool _acceptedTerms = false;
@@ -26,8 +24,7 @@ class LoanPageState extends State<LoanPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFC0028B),
-        title: const Text('Loan Application',
-            style: TextStyle(color: Colors.white)),
+        title: const Text('Loan Application', style: TextStyle(color: Colors.white)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -35,8 +32,7 @@ class LoanPageState extends State<LoanPage> {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        //problem
+      body: SingleChildScrollView(  //problem
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -49,10 +45,11 @@ class LoanPageState extends State<LoanPage> {
               ),
               const SizedBox(height: 16),
               const Text(
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam elementum enim non neque luctus, nec blandit ipsum sagittis. Sed fringilla blandit nibh, sit amet suscipit massa sollicitudin lacinia. Donec cursus, odio sit amet tincidunt sodales, odio nisl hendrerit sem, tempor tincidunt ligula nisl nec ante. Nulla aliquet aliquam justo, ac bibendum orci rhoncus non. Nullam quis ex elementum, pharetra ligula eleifend, convallis nulla. Nulla sit amet nisi viverra, semper nunc eu, posuere dui. Donec at metus ut eros rhoncus vestibulum vitae at lacus. Etiam imperdiet, nulla ac condimentum aliquam, enim lacus fringilla leo, vel hendrerit mi ipsum et ante. Vivamus finibus mauris eget diam sodales, eget efficitur orci laoreet. Sed feugiat odio quis mattis tristique. Mauris sit amet sem mauris.',
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
                 style: TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 20),
+              // Terms & Conditions Checkbox
               Row(
                 children: [
                   Switch(
@@ -73,8 +70,8 @@ class LoanPageState extends State<LoanPage> {
               ),
               const SizedBox(height: 20),
 
-              const Text('About You',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              // Loan Form Section
+              const Text('About You', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               const SizedBox(height: 16),
               Form(
                 key: _formKey,
@@ -96,7 +93,7 @@ class LoanPageState extends State<LoanPage> {
                       },
                     ),
                     const SizedBox(height: 16),
-
+                    // Monthly Expenses
                     TextFormField(
                       controller: _monthlyExpensesController,
                       decoration: const InputDecoration(
@@ -112,7 +109,7 @@ class LoanPageState extends State<LoanPage> {
                       },
                     ),
                     const SizedBox(height: 16),
-
+                    // Loan Amount
                     TextFormField(
                       controller: _loanAmountController,
                       decoration: const InputDecoration(
@@ -128,7 +125,7 @@ class LoanPageState extends State<LoanPage> {
                       },
                     ),
                     const SizedBox(height: 16),
-
+                    // Term (in months)
                     TextFormField(
                       controller: _termController,
                       decoration: const InputDecoration(
@@ -144,37 +141,35 @@ class LoanPageState extends State<LoanPage> {
                       },
                     ),
                     const SizedBox(height: 20),
-
+                    // Apply for Loan Button
                     BlocConsumer<TransactionsBloc, TransactionsState>(
                       listener: (context, state) {
                         if (state.loanApproved != null) {
+                          // Show success/failure dialog based on loan status
                           _showLoanDialog(context, state.loanApproved!);
                         }
                       },
                       builder: (context, state) {
                         return Column(
                           children: [
-                            if (state.isLoading) // loading spinner
+                            if (state.isLoading) // Show loading spinner if isLoading is true
                               const CircularProgressIndicator()
                             else
                               ElevatedButton(
                                 onPressed: () {
-                                  if (_formKey.currentState!.validate() &&
-                                      _acceptedTerms) {
+                                  if (_formKey.currentState!.validate() && _acceptedTerms) {
                                     // Apply for loan
                                     _applyForLoan(context);
                                   } else if (!_acceptedTerms) {
+                                    // Terms are not accepted
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              'Please accept the Terms & Conditions')),
+                                      const SnackBar(content: Text('Please accept the Terms & Conditions')),
                                     );
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFFC0028B),
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 12, horizontal: 20),
+                                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                                 ),
                                 child: const Text('Apply for Loan'),
                               ),
@@ -192,17 +187,20 @@ class LoanPageState extends State<LoanPage> {
     );
   }
 
+  // Method to trigger loan application event
   void _applyForLoan(BuildContext context) {
+    // Dispatch loan event with entered values
     context.read<TransactionsBloc>().add(
-          ApplyForLoan(
-            loanAmount: double.parse(_loanAmountController.text),
-            term: int.parse(_termController.text),
-            monthlySalary: double.parse(_monthlySalaryController.text),
-            monthlyExpenses: double.parse(_monthlyExpensesController.text),
-          ),
-        );
+      ApplyForLoan(
+        loanAmount: double.parse(_loanAmountController.text),
+        term: int.parse(_termController.text),
+        monthlySalary: double.parse(_monthlySalaryController.text),
+        monthlyExpenses: double.parse(_monthlyExpensesController.text),
+      ),
+    );
   }
 
+  // Show loan decision dialog
   void _showLoanDialog(BuildContext context, bool approved) {
     showDialog(
       context: context,
@@ -217,7 +215,7 @@ class LoanPageState extends State<LoanPage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); //
+                Navigator.pop(context);  // Close the dialog
               },
               child: const Text('OK'),
             ),
