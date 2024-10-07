@@ -9,7 +9,6 @@ class TransactionDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Safely handle arguments to avoid null errors
     final transactionData =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
@@ -34,11 +33,11 @@ class TransactionDetailsPage extends StatelessWidget {
     }
 
     final String amount =
-        transactionData['amount'] ?? '0'; // Default to '0' if null
+        transactionData['amount'] ?? '0'; 
     final String name =
-        transactionData['name'] ?? 'Unknown'; // Default to 'Unknown' if null
+        transactionData['name'] ?? 'Unknown'; 
     final String type = transactionData['type'] ??
-        'PAYMENT'; // Default to 'PAYMENT' if type is null
+        'PAYMENT';
 
     void splitTheBill() {
       final double originalAmount = double.parse(amount);
@@ -49,12 +48,6 @@ class TransactionDetailsPage extends StatelessWidget {
         amount: halfAmount,
         isTopUp: true,
       ));
-
-      //  BlocProvider.of<TransactionsBloc>(context).add(AddTransaction(
-      //    name: name,
-      //    amount: halfAmount,
-      //    isTopUp: false,
-      //  ));
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

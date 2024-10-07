@@ -1,18 +1,18 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
-import 'package:http/http.dart' as http; //had a problem, used wrong embeding
+import 'package:http/http.dart' as http; 
 import '../../models/transaction_model.dart';
 import 'transactions_event.dart';
 import 'package:logger/logger.dart';
 import 'transactions_state.dart';
 
 class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
-  final Logger logger = Logger(); // Initialize logger
+  final Logger logger = Logger(); 
 
   TransactionsBloc()
       : super(TransactionsState(transactions: [], balance: 150.25)) {
     on<AddTransaction>(_onAddTransaction);
-    on<ApplyForLoan>(_onApplyForLoan); // priv new
+    on<ApplyForLoan>(_onApplyForLoan); 
   }
 
   void _onAddTransaction(
@@ -24,7 +24,7 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
       date: DateTime.now(),
     );
 
-    //push back
+    
     final updatedTransactions = List<Transaction>.from(state.transactions)
       ..add(newTransaction);
 
@@ -32,7 +32,7 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
         (event.isTopUp
             ? event.amount
             : -event
-                .amount); //this will be implemented further on, basicly a if statment
+                .amount); 
 
     emit(state.copyWith(
         transactions: updatedTransactions, balance: updatedBalance));
@@ -71,7 +71,7 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
           isLoading: false));
     } else {
       emit(state.copyWith(
-          loanApproved: false, isLoading: false)); // Reset loading state
+          loanApproved: false, isLoading: false)); 
     }
   }
 
@@ -79,7 +79,6 @@ Future<int> getRandomNumber() async {
   final url = Uri.parse('https://api.allorigins.win/get?url=http://www.randomnumberapi.com/api/v1.0/random&cacheBust=${DateTime.now().millisecondsSinceEpoch}');
   final response = await http.get(url);
 
-  // Log the response for debugging
   logger.i('Response Status Code: ${response.statusCode}');
   logger.i('Response Body: ${response.body}');
 
@@ -103,7 +102,7 @@ Future<int> getRandomNumber() async {
   ) {
   
     if (randomNumber <= 50) return false;
-    if (accountBalance <= 1000) return false; //problem in this page you will see your current balance.... says in .docs
+    if (accountBalance <= 1000) return false; 
     if (monthlySalary <= 1000) return false;
     if (monthlyExpenses >= (monthlySalary / 3)) return false;
     if ((loanAmount / term) >= (monthlySalary / 3)) return false;

@@ -9,15 +9,13 @@ class PayPage extends StatefulWidget {
 
 class PayPageState extends State<PayPage> {
   String amount = '0';
-  bool isTopUp = false; // New variable to determine if this is a top-up
-
+  bool isTopUp = false; 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Retrieve the argument passed from TransactionsPage
+    super.didChangeDependencies();    
     final args = ModalRoute.of(context)!.settings.arguments;
     if (args is bool) {
-      isTopUp = args; // Set the isTopUp flag based on the argument
+      isTopUp = args; 
     }
   }
 
@@ -70,7 +68,7 @@ class PayPageState extends State<PayPage> {
                 _buildNumberPad(),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/pay_who', arguments: {'amount': amount, 'isTopUp': isTopUp}); //problem
+                    Navigator.pushNamed(context, '/pay_who', arguments: {'amount': amount, 'isTopUp': isTopUp}); 
 
                   },
                   style: ElevatedButton.styleFrom(

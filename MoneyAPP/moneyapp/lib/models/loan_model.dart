@@ -5,7 +5,7 @@ class Loan {
   final double monthlyExpenses;
   final double loanAmount;
   final int term;
-  bool appliedBefore = false; //problem, was always triggering and i couldnt pinpoint why
+  bool appliedBefore = false;
   Loan({
     required this.monthlySalary,
     required this.monthlyExpenses,

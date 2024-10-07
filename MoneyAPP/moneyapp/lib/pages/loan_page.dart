@@ -28,158 +28,20 @@ class LoanPageState extends State<LoanPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Go back
+            Navigator.pop(context); 
           },
         ),
       ),
-      body: SingleChildScrollView(  //problem
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Terms & Conditions
-              const Text(
-                'Terms and Conditions',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
-                style: TextStyle(fontSize: 16),
-              ),
+              _buildTermsAndConditionsHeader(),
+              _buildTermsAndConditionsCheckbox(),
               const SizedBox(height: 20),
-              // Terms & Conditions Checkbox
-              Row(
-                children: [
-                  Switch(
-                    value: _acceptedTerms,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _acceptedTerms = value;
-                      });
-                    },
-                  ),
-                  const Expanded(
-                    child: Text(
-                      'Accept Terms & Conditions',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-
-              // Loan Form Section
-              const Text('About You', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 16),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    // Monthly Salary
-                    TextFormField(
-                      controller: _monthlySalaryController,
-                      decoration: const InputDecoration(
-                        labelText: 'Monthly Salary',
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your monthly salary';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    // Monthly Expenses
-                    TextFormField(
-                      controller: _monthlyExpensesController,
-                      decoration: const InputDecoration(
-                        labelText: 'Monthly Expenses',
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your monthly expenses';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    // Loan Amount
-                    TextFormField(
-                      controller: _loanAmountController,
-                      decoration: const InputDecoration(
-                        labelText: 'Loan Amount',
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the loan amount';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    // Term (in months)
-                    TextFormField(
-                      controller: _termController,
-                      decoration: const InputDecoration(
-                        labelText: 'Term',
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the loan term';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    // Apply for Loan Button
-                    BlocConsumer<TransactionsBloc, TransactionsState>(
-                      listener: (context, state) {
-                        if (state.loanApproved != null) {
-                          // Show success/failure dialog based on loan status
-                          _showLoanDialog(context, state.loanApproved!);
-                        }
-                      },
-                      builder: (context, state) {
-                        return Column(
-                          children: [
-                            if (state.isLoading) // Show loading spinner if isLoading is true
-                              const CircularProgressIndicator()
-                            else
-                              ElevatedButton(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate() && _acceptedTerms) {
-                                    // Apply for loan
-                                    _applyForLoan(context);
-                                  } else if (!_acceptedTerms) {
-                                    // Terms are not accepted
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('Please accept the Terms & Conditions')),
-                                    );
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFC0028B),
-                                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                                ),
-                                child: const Text('Apply for Loan'),
-                              ),
-                          ],
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              _buildLoanFormSection(),
             ],
           ),
         ),
@@ -187,9 +49,139 @@ class LoanPageState extends State<LoanPage> {
     );
   }
 
-  // Method to trigger loan application event
+  Widget _buildTermsAndConditionsHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: const [
+        Text(
+          'Terms and Conditions',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 16),
+        Text(
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
+          style: TextStyle(fontSize: 16),
+        ),
+        SizedBox(height: 20),
+      ],
+    );
+  }
+
+  Widget _buildTermsAndConditionsCheckbox() {
+    return Row(
+      children: [
+        Switch(
+          value: _acceptedTerms,
+          onChanged: (bool value) {
+            setState(() {
+              _acceptedTerms = value;
+            });
+          },
+        ),
+        const Expanded(
+          child: Text(
+            'Accept Terms & Conditions',
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLoanFormSection() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          _buildTextField(
+            controller: _monthlySalaryController,
+            labelText: 'Monthly Salary',
+            validatorMessage: 'Please enter your monthly salary',
+          ),
+          const SizedBox(height: 16),
+
+          _buildTextField(
+            controller: _monthlyExpensesController,
+            labelText: 'Monthly Expenses',
+            validatorMessage: 'Please enter your monthly expenses',
+          ),
+          const SizedBox(height: 16),
+          _buildTextField(
+            controller: _loanAmountController,
+            labelText: 'Loan Amount',
+            validatorMessage: 'Please enter the loan amount',
+          ),
+          const SizedBox(height: 16),
+
+          _buildTextField(
+            controller: _termController,
+            labelText: 'Term',
+            validatorMessage: 'Please enter the loan term',
+          ),
+          const SizedBox(height: 20),
+          _buildLoanButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String labelText,
+    required String validatorMessage,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        border: const OutlineInputBorder(),
+      ),
+      keyboardType: TextInputType.number,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return validatorMessage;
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildLoanButton() {
+    return BlocConsumer<TransactionsBloc, TransactionsState>(
+      listener: (context, state) {
+        if (state.loanApproved != null) {
+          _showLoanDialog(context, state.loanApproved!);
+        }
+      },
+      builder: (context, state) {
+        return Column(
+          children: [
+            if (state.isLoading)
+              const CircularProgressIndicator()
+            else
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate() && _acceptedTerms) {
+                    _applyForLoan(context);
+                  } else if (!_acceptedTerms) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Please accept the Terms & Conditions')),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFC0028B),
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                ),
+                child: const Text('Apply for Loan'),
+              ),
+          ],
+        );
+      },
+    );
+  }
+
   void _applyForLoan(BuildContext context) {
-    // Dispatch loan event with entered values
     context.read<TransactionsBloc>().add(
       ApplyForLoan(
         loanAmount: double.parse(_loanAmountController.text),
@@ -199,8 +191,6 @@ class LoanPageState extends State<LoanPage> {
       ),
     );
   }
-
-  // Show loan decision dialog
   void _showLoanDialog(BuildContext context, bool approved) {
     showDialog(
       context: context,
@@ -215,7 +205,7 @@ class LoanPageState extends State<LoanPage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);  // Close the dialog
+                Navigator.pop(context);  
               },
               child: const Text('OK'),
             ),
