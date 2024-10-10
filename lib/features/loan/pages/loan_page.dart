@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/transactions/transactions_bloc.dart';
-import '../blocs/transactions/transactions_event.dart';
-import '../blocs/transactions/transactions_state.dart';
+import '../../../common/blocs/transactions_bloc.dart';
+import '../../../common/blocs/transactions_event.dart';
+import '../../../common/blocs/transactions_state.dart';
 
 class LoanPage extends StatefulWidget {
   const LoanPage({super.key});

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import '../../source/api_source.dart';
-import '../../models/transaction_model.dart';
+import '../../features/loan/source/api_source.dart';
+import '../../features/transactions/transaction_model.dart';
 import 'transactions_event.dart';
 import 'package:logger/logger.dart';
 import 'transactions_state.dart';

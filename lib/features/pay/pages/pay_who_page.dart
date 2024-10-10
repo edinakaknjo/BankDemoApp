@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moneyapp/blocs/transactions/transactions_event.dart';
-import '../blocs/transactions/transactions_bloc.dart';
+import 'package:moneyapp/common/blocs/transactions_event.dart';
+import '../../../common/blocs/transactions_bloc.dart';
 
 class PayWhoPage extends StatefulWidget {
   const PayWhoPage({super.key});

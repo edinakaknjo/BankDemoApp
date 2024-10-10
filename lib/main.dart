@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moneyapp/pages/loan_page.dart';
-import 'package:moneyapp/pages/transaction_details_page.dart';
-import 'blocs/transactions/transactions_bloc.dart';
-import 'pages/pay_page.dart';
-import 'pages/pay_who_page.dart';
-import 'pages/transactions_page.dart';
+import 'package:moneyapp/features/loan/pages/loan_page.dart';
+import 'package:moneyapp/features/transactions/pages/transaction_details_page.dart';
+import 'common/blocs/transactions_bloc.dart';
+import 'features/pay/pages/pay_page.dart';
+import 'features/pay/pages/pay_who_page.dart';
+import 'features/transactions/pages/transactions_page.dart';
 
 void main() {
   runApp(
