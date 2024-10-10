@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/blocs/transactions_bloc.dart';
 import '../../../common/blocs/transactions_event.dart';
 import '../../../common/blocs/transactions_state.dart';
+import 'package:go_router/go_router.dart';
 
 class LoanPage extends StatefulWidget {
   const LoanPage({super.key});
@@ -13,8 +14,10 @@ class LoanPage extends StatefulWidget {
 
 class LoanPageState extends State<LoanPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _monthlySalaryController = TextEditingController();
-  final TextEditingController _monthlyExpensesController = TextEditingController();
+  final TextEditingController _monthlySalaryController =
+      TextEditingController();
+  final TextEditingController _monthlyExpensesController =
+      TextEditingController();
   final TextEditingController _loanAmountController = TextEditingController();
   final TextEditingController _termController = TextEditingController();
   bool _acceptedTerms = false;
@@ -24,11 +27,12 @@ class LoanPageState extends State<LoanPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFC0028B),
-        title: const Text('Loan Application', style: TextStyle(color: Colors.white)),
+        title: const Text('Loan Application',
+            style: TextStyle(color: Colors.white)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); 
+            context.go('/');
           },
         ),
       ),
@@ -50,9 +54,9 @@ class LoanPageState extends State<LoanPage> {
   }
 
   Widget _buildTermsAndConditionsHeader() {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
+      children: [
         Text(
           'Terms and Conditions',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -99,7 +103,6 @@ class LoanPageState extends State<LoanPage> {
             validatorMessage: 'Please enter your monthly salary',
           ),
           const SizedBox(height: 16),
-
           _buildTextField(
             controller: _monthlyExpensesController,
             labelText: 'Monthly Expenses',
@@ -112,7 +115,6 @@ class LoanPageState extends State<LoanPage> {
             validatorMessage: 'Please enter the loan amount',
           ),
           const SizedBox(height: 16),
-
           _buildTextField(
             controller: _termController,
             labelText: 'Term',
@@ -165,13 +167,16 @@ class LoanPageState extends State<LoanPage> {
                     _applyForLoan(context);
                   } else if (!_acceptedTerms) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please accept the Terms & Conditions')),
+                      const SnackBar(
+                          content:
+                              Text('Please accept the Terms & Conditions')),
                     );
                   }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFC0028B),
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                 ),
                 child: const Text('Apply for Loan'),
               ),
@@ -183,14 +188,15 @@ class LoanPageState extends State<LoanPage> {
 
   void _applyForLoan(BuildContext context) {
     context.read<TransactionsBloc>().add(
-      ApplyForLoan(
-        loanAmount: double.parse(_loanAmountController.text),
-        term: int.parse(_termController.text),
-        monthlySalary: double.parse(_monthlySalaryController.text),
-        monthlyExpenses: double.parse(_monthlyExpensesController.text),
-      ),
-    );
+          ApplyForLoan(
+            loanAmount: double.parse(_loanAmountController.text),
+            term: int.parse(_termController.text),
+            monthlySalary: double.parse(_monthlySalaryController.text),
+            monthlyExpenses: double.parse(_monthlyExpensesController.text),
+          ),
+        );
   }
+
   void _showLoanDialog(BuildContext context, bool approved) {
     showDialog(
       context: context,
@@ -205,7 +211,7 @@ class LoanPageState extends State<LoanPage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);  
+                context.go('/');
               },
               child: const Text('OK'),
             ),

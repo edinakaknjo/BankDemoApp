@@ -1,13 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moneyapp/features/loan/pages/loan_page.dart';
-import 'package:moneyapp/features/transactions/pages/transaction_details_page.dart';
-import 'common/blocs/transactions_bloc.dart';
-import 'features/pay/pages/pay_page.dart';
-import 'features/pay/pages/pay_who_page.dart';
-import 'features/transactions/pages/transactions_page.dart';
-
-void main() {
+import 'package:moneyapp/common/blocs/transactions_bloc.dart';
+import 'package:moneyapp/router/go_router.dart'; 
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+   await Firebase.initializeApp(
+     options: const FirebaseOptions(
+        apiKey: "AIzaSyAzv3b5Txc0jPkTTBXXq9FqUE5YNXt7p8c",
+        appId: "1:4090609795:android:694b1a6f24d9720aec1bb6",
+        messagingSenderId: "4090609795",
+        projectId: "moneyapp-6d288"),
+   );
   runApp(
     BlocProvider(
       create: (context) => TransactionsBloc(),
@@ -18,21 +22,13 @@ void main() {
 
 class MoneyApp extends StatelessWidget {
   const MoneyApp({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'MoneyApp',
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const TransactionsPage(),
-        '/pay': (context) => const PayPage(),
-        '/pay_who': (context) => const PayWhoPage(),
-        '/transaction_details': (context) => const TransactionDetailsPage(), 
-        '/loan': (context) => const LoanPage(),
-      },
-
+      routerConfig: AppRouter.router, 
     );
   }
 }

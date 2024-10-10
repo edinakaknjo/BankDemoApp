@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moneyapp/features/transactions/pages/transactions_page.dart';
+import 'package:go_router/go_router.dart'; 
 import '../../../common/blocs/transactions_bloc.dart';
 import '../../../common/blocs/transactions_event.dart';
 
@@ -9,8 +9,7 @@ class TransactionDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final transactionData =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final Map<String, dynamic>? transactionData = GoRouterState.of(context).extra as Map<String, dynamic>?;
 
     if (transactionData == null) {
       return Scaffold(
@@ -32,12 +31,9 @@ class TransactionDetailsPage extends StatelessWidget {
       );
     }
 
-    final String amount =
-        transactionData['amount'] ?? '0'; 
-    final String name =
-        transactionData['name'] ?? 'Unknown'; 
-    final String type = transactionData['type'] ??
-        'PAYMENT';
+    final String amount = transactionData['amount'] ?? '0';
+    final String name = transactionData['name'] ?? 'Unknown';
+    final String type = transactionData['type'] ?? 'PAYMENT';
 
     void splitTheBill() {
       final double originalAmount = double.parse(amount);
@@ -50,16 +46,10 @@ class TransactionDetailsPage extends StatelessWidget {
       ));
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text(
-                'Bill split. £$halfAmount returned and £$halfAmount paid.')),
+        SnackBar(content: Text('Bill split. £$halfAmount returned and £$halfAmount paid.')),
       );
 
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const TransactionsPage()),
-        (route) => false,
-      );
+        context.go('/');
     }
 
     return Scaffold(
@@ -74,11 +64,7 @@ class TransactionDetailsPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const TransactionsPage()),
-              (route) => false,
-            );
+           context.go('/');
           },
         ),
       ),
@@ -89,20 +75,15 @@ class TransactionDetailsPage extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(Icons.shopping_bag,
-                    size: 50, color: Color(0xFFC0028B)),
+                const Icon(Icons.shopping_bag, size: 50, color: Color(0xFFC0028B)),
                 const SizedBox(width: 10),
-                Text(name,
-                    style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold)),
+                Text(name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
               ],
             ),
             const SizedBox(height: 20),
             Text('£$amount.00',
                 style: const TextStyle(
-                    fontSize: 48,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFFC0028B))),
+                    fontSize: 48, fontWeight: FontWeight.bold, color: Color(0xFFC0028B))),
             const SizedBox(height: 20),
             ListTile(
               leading: const Icon(Icons.receipt),
@@ -123,17 +104,14 @@ class TransactionDetailsPage extends StatelessWidget {
                   value: false,
                   onChanged: (value) {
                     if (value) {
-                      BlocProvider.of<TransactionsBloc>(context)
-                          .add(AddTransaction(
+                      BlocProvider.of<TransactionsBloc>(context).add(AddTransaction(
                         name: name,
                         amount: double.parse(amount),
                         isTopUp: false,
                       ));
 
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content:
-                                Text('Repeating payment created for £$amount')),
+                        SnackBar(content: Text('Repeating payment created for £$amount')),
                       );
                     }
                   },

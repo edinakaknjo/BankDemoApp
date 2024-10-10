@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:logging/logging.dart';
 
 class PayPage extends StatefulWidget {
   const PayPage({super.key});
@@ -8,14 +10,25 @@ class PayPage extends StatefulWidget {
 }
 
 class PayPageState extends State<PayPage> {
+  final Logger _logger = Logger('PayPage');
   String amount = '0';
-  bool isTopUp = false; 
+  bool isTopUp = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _logger.info('PayPage initialized');
+  }
+
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();    
+    super.didChangeDependencies();
     final args = ModalRoute.of(context)!.settings.arguments;
     if (args is bool) {
-      isTopUp = args; 
+      isTopUp = args;
+      _logger.info('isTopUp value retrieved: $isTopUp');
+    } else {
+      _logger.warning('No valid arguments received');
     }
   }
 
@@ -30,6 +43,7 @@ class PayPageState extends State<PayPage> {
           amount += key;
         }
       }
+      _logger.info('Amount updated: $amount');
     });
   }
 
@@ -59,7 +73,10 @@ class PayPageState extends State<PayPage> {
                 const SizedBox(height: 20),
                 Text(
                   '£$amount.00',
-                  style: const TextStyle(fontSize: 48, color: Colors.white, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 48,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -68,16 +85,20 @@ class PayPageState extends State<PayPage> {
                 _buildNumberPad(),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/pay_who', arguments: {'amount': amount, 'isTopUp': isTopUp}); 
-
+                    _logger.info(
+                        'Proceeding with payment: amount=$amount, isTopUp=$isTopUp');
+                    context.push('/pay_who',
+                        extra: {'amount': amount, 'isTopUp': isTopUp});
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 100),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 100),
                   ),
-                  child: Text(isTopUp ? 'Top Up Next' : 'Next', style: const TextStyle(color: Color(0xFFC0028B), fontSize: 18)),
+                  child: Text(isTopUp ? 'Top Up Next' : 'Next',
+                      style: const TextStyle(
+                          color: Color(0xFFC0028B), fontSize: 18)),
                 ),
-
                 const SizedBox(height: 20),
               ],
             ),
@@ -95,7 +116,8 @@ class PayPageState extends State<PayPage> {
         ...[1, 2, 3, 4, 5, 6, 7, 8, 9, 'C', 0].map((key) {
           return TextButton(
             onPressed: () => _onKeyPressed(key.toString()),
-            child: Text(key.toString(), style: const TextStyle(color: Colors.white, fontSize: 24)),
+            child: Text(key.toString(),
+                style: const TextStyle(color: Colors.white, fontSize: 24)),
           );
         }),
       ],

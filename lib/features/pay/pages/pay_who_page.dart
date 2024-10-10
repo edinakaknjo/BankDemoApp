@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moneyapp/common/blocs/transactions_event.dart';
 import '../../../common/blocs/transactions_bloc.dart';
 
@@ -16,9 +17,9 @@ class PayWhoPageState extends State<PayWhoPage> {
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final String amount = args['amount'] as String; 
-    final bool isTopUp = args['isTopUp'] as bool; 
+        GoRouterState.of(context).extra as Map<String, dynamic>;
+    final String amount = args['amount'] as String;
+    final bool isTopUp = args['isTopUp'] as bool;
 
     return Scaffold(
       appBar: AppBar(
@@ -61,8 +62,8 @@ class PayWhoPageState extends State<PayWhoPage> {
                     isTopUp: isTopUp,
                   ));
 
-                  Navigator.pushNamed(context, '/transaction_details',
-                      arguments: {'amount': amount, 'name': _controller.text});
+                  context.push('/transaction_details',
+                      extra: {'amount': amount, 'name': _controller.text});
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
