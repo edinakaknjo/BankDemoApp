@@ -1,14 +1,17 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import '../../source/api_source.dart';
 import '../../models/transaction_model.dart';
 import 'transactions_event.dart';
-import 'package:logger/logger.dart';
 import 'transactions_state.dart';
+import 'package:logger/logger.dart';
 
 class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
   final Logger logger = Logger();
+  final ApiDataSource apiDataSource;
 
-  TransactionsBloc()
+  TransactionsBloc(this.apiDataSource)
       : super(TransactionsState(transactions: [], balance: 150.25)) {
     on<AddTransaction>(_onAddTransaction);
     on<ApplyForLoan>(_onApplyForLoan);
@@ -37,35 +40,49 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
       ApplyForLoan event, Emitter<TransactionsState> emit) async {
     emit(state.copyWith(isLoading: true));
 
-    int randomNumber = await getRandomNumber();
-    bool loanApproved = _checkLoanEligibility(
-      randomNumber,
-      state.balance,
-      event.loanAmount,
-      event.term,
-      event.monthlySalary,
-      event.monthlyExpenses,
-    );
+    try {
+      final cacheBust = DateTime.now().millisecondsSinceEpoch.toString();
+      final response = await apiDataSource.getRandomNumber(cacheBust);
+      logger.i('Response Status Code: ${response.response.statusCode}');
+      logger.i('Response Body: ${response.data}');
 
-    if (loanApproved) {
-      final newLoanTransaction = Transaction(
-        name: 'Loan',
-        amount: event.loanAmount,
-        isTopUp: true,
-        date: DateTime.now(),
+      final jsonData = json.decode(response.data);
+      String contents = jsonData['contents'];
+      List<dynamic> numbers = json.decode(contents);
+      int randomNumber = numbers[0];
+
+      bool loanApproved = _checkLoanEligibility(
+        randomNumber,
+        state.balance,
+        event.loanAmount,
+        event.term,
+        event.monthlySalary,
+        event.monthlyExpenses,
       );
 
-      final updatedTransactions = List<Transaction>.from(state.transactions)
-        ..add(newLoanTransaction);
-      final updatedBalance = state.balance + event.loanAmount;
+      if (loanApproved) {
+        final newLoanTransaction = Transaction(
+          name: 'Loan',
+          amount: event.loanAmount,
+          isTopUp: true,
+          date: DateTime.now(),
+        );
 
-      emit(state.copyWith(
-          transactions: updatedTransactions,
-          balance: updatedBalance,
-          loanApproved: true,
-          isLoading: false));
-    } else {
-      emit(state.copyWith(loanApproved: false, isLoading: false));
+        final updatedTransactions = List<Transaction>.from(state.transactions)
+          ..add(newLoanTransaction);
+        final updatedBalance = state.balance + event.loanAmount;
+
+        emit(state.copyWith(
+            transactions: updatedTransactions,
+            balance: updatedBalance,
+            loanApproved: true,
+            isLoading: false));
+      } else {
+        emit(state.copyWith(loanApproved: false, isLoading: false));
+      }
+    } catch (error) {
+      logger.e('Error fetching random number: $error');
+      emit(state.copyWith(isLoading: false));
     }
   }
 

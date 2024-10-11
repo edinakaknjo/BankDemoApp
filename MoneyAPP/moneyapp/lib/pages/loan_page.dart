@@ -50,9 +50,9 @@ class LoanPageState extends State<LoanPage> {
   }
 
   Widget _buildTermsAndConditionsHeader() {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
+      children: [
         Text(
           'Terms and Conditions',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
