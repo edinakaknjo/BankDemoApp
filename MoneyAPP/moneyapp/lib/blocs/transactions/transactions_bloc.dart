@@ -1,12 +1,13 @@
 import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
+import 'package:injectable/injectable.dart';
 import '../../source/api_source.dart';
 import '../../models/transaction_model.dart';
 import 'transactions_event.dart';
 import 'transactions_state.dart';
 import 'package:logger/logger.dart';
 
+@injectable
 class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
   final Logger logger = Logger();
   final ApiDataSource apiDataSource;
