@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
+import 'package:moneyapp/features/pay/pages/pay_who_page.dart';
+import 'package:moneyapp/features/transactions/pages/transactions_page.dart';
+
 
 class PayPage extends StatefulWidget {
-  const PayPage({super.key});
+  final bool isTopUp;
+
+  const PayPage({super.key, required this.isTopUp}); 
 
   @override
   PayPageState createState() => PayPageState();
@@ -12,24 +17,11 @@ class PayPage extends StatefulWidget {
 class PayPageState extends State<PayPage> {
   final Logger _logger = Logger('PayPage');
   String amount = '0';
-  bool isTopUp = false;
 
   @override
   void initState() {
     super.initState();
-    _logger.info('PayPage initialized');
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final args = ModalRoute.of(context)!.settings.arguments;
-    if (args is bool) {
-      isTopUp = args;
-      _logger.info('isTopUp value retrieved: $isTopUp');
-    } else {
-      _logger.warning('No valid arguments received');
-    }
+    _logger.info('PayPage initialized with isTopUp=${widget.isTopUp}');
   }
 
   void _onKeyPressed(String key) {
@@ -86,16 +78,16 @@ class PayPageState extends State<PayPage> {
                 ElevatedButton(
                   onPressed: () {
                     _logger.info(
-                        'Proceeding with payment: amount=$amount, isTopUp=$isTopUp');
-                    context.push('/pay_who',
-                        extra: {'amount': amount, 'isTopUp': isTopUp});
+                        'Proceeding with payment: amount=$amount, isTopUp=${widget.isTopUp}');
+                    context.go('/pay_who',
+                        extra: {'amount': amount, 'isTopUp': widget.isTopUp});
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                         vertical: 20, horizontal: 100),
                   ),
-                  child: Text(isTopUp ? 'Top Up Next' : 'Next',
+                  child: Text(widget.isTopUp ? 'Top Up Next' : 'Next',
                       style: const TextStyle(
                           color: Color(0xFFC0028B), fontSize: 18)),
                 ),
