@@ -14,8 +14,7 @@ void main() {
   final apiSource = ApiDataSource(dio);
   runApp(
     BlocProvider(
-      create: (context) =>
-          TransactionsCubit(apiSource), // Use TransactionsCubit
+      create: (context) => TransactionsCubit(apiSource),
       child: const MoneyApp(),
     ),
   );

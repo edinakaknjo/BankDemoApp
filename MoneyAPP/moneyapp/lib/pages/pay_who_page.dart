@@ -55,9 +55,9 @@ class PayWhoPageState extends State<PayWhoPage> {
               ElevatedButton(
                 onPressed: () {
                   BlocProvider.of<TransactionsCubit>(context).addTransaction(
-                    _controller.text, // Positional argument: name
-                    double.parse(amount), // Positional argument: amount
-                    isTopUp, // Positional argument: isTopUp
+                    _controller.text,
+                    double.parse(amount),
+                    isTopUp,
                   );
 
                   Navigator.pushNamed(context, '/transaction_details',

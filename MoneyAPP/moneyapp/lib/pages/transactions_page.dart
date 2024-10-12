@@ -29,7 +29,6 @@ class TransactionsPage extends StatelessWidget {
             child: Column(
               children: [
                 BlocBuilder<TransactionsCubit, TransactionsState>(
-                  // Line 31 fixed
                   builder: (context, state) {
                     return Text(
                       '£${state.balance.toStringAsFixed(2)}',
@@ -75,7 +74,6 @@ class TransactionsPage extends StatelessWidget {
                 ),
               ),
               child: BlocBuilder<TransactionsCubit, TransactionsState>(
-                // Line 77 fixed
                 builder: (context, state) {
                   return ListView.builder(
                     itemCount: state.transactions.length,

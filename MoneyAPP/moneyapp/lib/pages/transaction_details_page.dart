@@ -40,9 +40,9 @@ class TransactionDetailsPage extends StatelessWidget {
       final double halfAmount = originalAmount / 2;
 
       BlocProvider.of<TransactionsCubit>(context).addTransaction(
-        name, // Positional argument
-        halfAmount, // Positional argument
-        true, // Positional argument for isTopUp
+        name,
+        halfAmount,
+        true,
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -122,9 +122,9 @@ class TransactionDetailsPage extends StatelessWidget {
                     if (value) {
                       BlocProvider.of<TransactionsCubit>(context)
                           .addTransaction(
-                        name, // Positional argument
-                        double.parse(amount), // Positional argument
-                        false, // Positional argument for isTopUp
+                        name,
+                        double.parse(amount),
+                        false,
                       );
 
                       ScaffoldMessenger.of(context).showSnackBar(

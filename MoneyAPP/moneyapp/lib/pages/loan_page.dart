@@ -148,7 +148,6 @@ class LoanPageState extends State<LoanPage> {
 
   Widget _buildLoanButton() {
     return BlocConsumer<TransactionsCubit, TransactionsState>(
-      // Updated to TransactionsCubit
       listener: (context, state) {
         if (state.loanApproved != null) {
           _showLoanDialog(context, state.loanApproved!);
@@ -187,7 +186,6 @@ class LoanPageState extends State<LoanPage> {
 
   void _applyForLoan(BuildContext context) {
     context.read<TransactionsCubit>().applyForLoan(
-          // Call the method directly in Cubit
           double.parse(_loanAmountController.text),
           int.parse(_termController.text),
           double.parse(_monthlySalaryController.text),
