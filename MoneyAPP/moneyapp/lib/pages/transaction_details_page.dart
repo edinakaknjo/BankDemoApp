@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyapp/pages/transactions_page.dart';
-import '../blocs/transactions/transactions_bloc.dart';
-import '../blocs/transactions/transactions_event.dart';
+import '../cubit/transactions/transactions_cubit.dart';
 
 class TransactionDetailsPage extends StatelessWidget {
   const TransactionDetailsPage({super.key});
@@ -32,27 +31,25 @@ class TransactionDetailsPage extends StatelessWidget {
       );
     }
 
-    final String amount =
-        transactionData['amount'] ?? '0'; 
-    final String name =
-        transactionData['name'] ?? 'Unknown'; 
-    final String type = transactionData['type'] ??
-        'PAYMENT';
+    final String amount = transactionData['amount'] ?? '0';
+    final String name = transactionData['name'] ?? 'Unknown';
+    final String type = transactionData['type'] ?? 'PAYMENT';
 
     void splitTheBill() {
       final double originalAmount = double.parse(amount);
       final double halfAmount = originalAmount / 2;
 
-      BlocProvider.of<TransactionsBloc>(context).add(AddTransaction(
-        name: name,
-        amount: halfAmount,
-        isTopUp: true,
-      ));
+      BlocProvider.of<TransactionsCubit>(context).addTransaction(
+        name, // Positional argument
+        halfAmount, // Positional argument
+        true, // Positional argument for isTopUp
+      );
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(
-                'Bill split. £$halfAmount returned and £$halfAmount paid.')),
+          content:
+              Text('Bill split. £$halfAmount returned and £$halfAmount paid.'),
+        ),
       );
 
       Navigator.pushAndRemoveUntil(
@@ -123,17 +120,18 @@ class TransactionDetailsPage extends StatelessWidget {
                   value: false,
                   onChanged: (value) {
                     if (value) {
-                      BlocProvider.of<TransactionsBloc>(context)
-                          .add(AddTransaction(
-                        name: name,
-                        amount: double.parse(amount),
-                        isTopUp: false,
-                      ));
+                      BlocProvider.of<TransactionsCubit>(context)
+                          .addTransaction(
+                        name, // Positional argument
+                        double.parse(amount), // Positional argument
+                        false, // Positional argument for isTopUp
+                      );
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                            content:
-                                Text('Repeating payment created for £$amount')),
+                          content:
+                              Text('Repeating payment created for £$amount'),
+                        ),
                       );
                     }
                   },

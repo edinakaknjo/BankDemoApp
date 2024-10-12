@@ -3,42 +3,36 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import '../../source/api_source.dart';
 import '../../models/transaction_model.dart';
-import 'transactions_event.dart';
 import 'transactions_state.dart';
 import 'package:logger/logger.dart';
 
 @injectable
-class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
+class TransactionsCubit extends Cubit<TransactionsState> {
   final Logger logger = Logger();
   final ApiDataSource apiDataSource;
 
-  TransactionsBloc(this.apiDataSource)
-      : super(TransactionsState(transactions: [], balance: 150.25)) {
-    on<AddTransaction>(_onAddTransaction);
-    on<ApplyForLoan>(_onApplyForLoan);
-  }
+  TransactionsCubit(this.apiDataSource)
+      : super(TransactionsState(transactions: [], balance: 150.25));
 
-  void _onAddTransaction(
-      AddTransaction event, Emitter<TransactionsState> emit) {
+  void addTransaction(String name, double amount, bool isTopUp) {
     final newTransaction = Transaction(
-      name: event.name,
-      amount: event.amount,
-      isTopUp: event.isTopUp,
+      name: name,
+      amount: amount,
+      isTopUp: isTopUp,
       date: DateTime.now(),
     );
 
     final updatedTransactions = List<Transaction>.from(state.transactions)
       ..add(newTransaction);
 
-    final updatedBalance =
-        state.balance + (event.isTopUp ? event.amount : -event.amount);
+    final updatedBalance = state.balance + (isTopUp ? amount : -amount);
 
     emit(state.copyWith(
         transactions: updatedTransactions, balance: updatedBalance));
   }
 
-  void _onApplyForLoan(
-      ApplyForLoan event, Emitter<TransactionsState> emit) async {
+  Future<void> applyForLoan(double loanAmount, int term, double monthlySalary,
+      double monthlyExpenses) async {
     emit(state.copyWith(isLoading: true));
 
     try {
@@ -55,23 +49,23 @@ class TransactionsBloc extends Bloc<TransactionsEvent, TransactionsState> {
       bool loanApproved = _checkLoanEligibility(
         randomNumber,
         state.balance,
-        event.loanAmount,
-        event.term,
-        event.monthlySalary,
-        event.monthlyExpenses,
+        loanAmount,
+        term,
+        monthlySalary,
+        monthlyExpenses,
       );
 
       if (loanApproved) {
         final newLoanTransaction = Transaction(
           name: 'Loan',
-          amount: event.loanAmount,
+          amount: loanAmount,
           isTopUp: true,
           date: DateTime.now(),
         );
 
         final updatedTransactions = List<Transaction>.from(state.transactions)
           ..add(newLoanTransaction);
-        final updatedBalance = state.balance + event.loanAmount;
+        final updatedBalance = state.balance + loanAmount;
 
         emit(state.copyWith(
             transactions: updatedTransactions,

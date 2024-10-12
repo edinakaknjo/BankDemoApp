@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyapp/pages/loan_page.dart';
 import 'package:moneyapp/pages/transaction_details_page.dart';
-import 'blocs/transactions/transactions_bloc.dart';
+import 'cubit/transactions/transactions_cubit.dart';
 import 'pages/pay_page.dart';
 import 'pages/pay_who_page.dart';
 import 'pages/transactions_page.dart';
@@ -14,7 +14,8 @@ void main() {
   final apiSource = ApiDataSource(dio);
   runApp(
     BlocProvider(
-      create: (context) => TransactionsBloc(apiSource),
+      create: (context) =>
+          TransactionsCubit(apiSource), // Use TransactionsCubit
       child: const MoneyApp(),
     ),
   );

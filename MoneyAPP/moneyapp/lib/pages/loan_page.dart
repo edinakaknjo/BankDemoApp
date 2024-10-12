@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/transactions/transactions_bloc.dart';
-import '../blocs/transactions/transactions_event.dart';
-import '../blocs/transactions/transactions_state.dart';
+import '../cubit/transactions/transactions_cubit.dart';
+import '../cubit/transactions/transactions_state.dart';
 
 class LoanPage extends StatefulWidget {
   const LoanPage({super.key});
@@ -148,7 +147,8 @@ class LoanPageState extends State<LoanPage> {
   }
 
   Widget _buildLoanButton() {
-    return BlocConsumer<TransactionsBloc, TransactionsState>(
+    return BlocConsumer<TransactionsCubit, TransactionsState>(
+      // Updated to TransactionsCubit
       listener: (context, state) {
         if (state.loanApproved != null) {
           _showLoanDialog(context, state.loanApproved!);
@@ -186,13 +186,12 @@ class LoanPageState extends State<LoanPage> {
   }
 
   void _applyForLoan(BuildContext context) {
-    context.read<TransactionsBloc>().add(
-          ApplyForLoan(
-            loanAmount: double.parse(_loanAmountController.text),
-            term: int.parse(_termController.text),
-            monthlySalary: double.parse(_monthlySalaryController.text),
-            monthlyExpenses: double.parse(_monthlyExpensesController.text),
-          ),
+    context.read<TransactionsCubit>().applyForLoan(
+          // Call the method directly in Cubit
+          double.parse(_loanAmountController.text),
+          int.parse(_termController.text),
+          double.parse(_monthlySalaryController.text),
+          double.parse(_monthlyExpensesController.text),
         );
   }
 

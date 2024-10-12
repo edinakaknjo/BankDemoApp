@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moneyapp/blocs/transactions/transactions_event.dart';
-import '../blocs/transactions/transactions_bloc.dart';
+import '../cubit/transactions/transactions_cubit.dart';
 
 class PayWhoPage extends StatefulWidget {
   const PayWhoPage({super.key});
@@ -17,8 +16,8 @@ class PayWhoPageState extends State<PayWhoPage> {
   Widget build(BuildContext context) {
     final Map<String, dynamic> args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final String amount = args['amount'] as String; 
-    final bool isTopUp = args['isTopUp'] as bool; 
+    final String amount = args['amount'] as String;
+    final bool isTopUp = args['isTopUp'] as bool;
 
     return Scaffold(
       appBar: AppBar(
@@ -55,11 +54,11 @@ class PayWhoPageState extends State<PayWhoPage> {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  BlocProvider.of<TransactionsBloc>(context).add(AddTransaction(
-                    name: _controller.text,
-                    amount: double.parse(amount),
-                    isTopUp: isTopUp,
-                  ));
+                  BlocProvider.of<TransactionsCubit>(context).addTransaction(
+                    _controller.text, // Positional argument: name
+                    double.parse(amount), // Positional argument: amount
+                    isTopUp, // Positional argument: isTopUp
+                  );
 
                   Navigator.pushNamed(context, '/transaction_details',
                       arguments: {'amount': amount, 'name': _controller.text});

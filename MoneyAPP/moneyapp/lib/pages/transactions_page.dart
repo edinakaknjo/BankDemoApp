@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../blocs/transactions/transactions_bloc.dart';
-import '../blocs/transactions/transactions_state.dart';
+import '../cubit/transactions/transactions_cubit.dart';
+import '../cubit/transactions/transactions_state.dart';
 
 class TransactionsPage extends StatelessWidget {
   const TransactionsPage({super.key});
@@ -23,15 +23,16 @@ class TransactionsPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-             Container(
+          Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
             color: const Color(0xFFC0028B),
             child: Column(
               children: [
-                BlocBuilder<TransactionsBloc, TransactionsState>(
+                BlocBuilder<TransactionsCubit, TransactionsState>(
+                  // Line 31 fixed
                   builder: (context, state) {
                     return Text(
-                      '£${state.balance.toStringAsFixed(2)}', //
+                      '£${state.balance.toStringAsFixed(2)}',
                       style: const TextStyle(
                         fontSize: 48,
                         color: Colors.white,
@@ -41,7 +42,7 @@ class TransactionsPage extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 20),
-                  Container(
+                Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: Colors.grey[300],
@@ -63,7 +64,6 @@ class TransactionsPage extends StatelessWidget {
               ],
             ),
           ),
-
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(16),
@@ -74,7 +74,8 @@ class TransactionsPage extends StatelessWidget {
                   topRight: Radius.circular(20),
                 ),
               ),
-              child: BlocBuilder<TransactionsBloc, TransactionsState>(
+              child: BlocBuilder<TransactionsCubit, TransactionsState>(
+                // Line 77 fixed
                 builder: (context, state) {
                   return ListView.builder(
                     itemCount: state.transactions.length,
@@ -85,7 +86,7 @@ class TransactionsPage extends StatelessWidget {
                       final svgAssetPath = isTopUp
                           ? 'assets/icons/topup_icon.svg'
                           : 'assets/icons/payment_icon.svg';
-   
+
                       final amountColor =
                           isTopUp ? const Color(0xFFC0028B) : Colors.black;
                       final amountPrefix = isTopUp ? "+" : " ";
@@ -129,30 +130,28 @@ class TransactionsPage extends StatelessWidget {
       },
       child: Column(
         children: [
-        Container(
+          Container(
             height: 60,
             width: 60,
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius:
-                  BorderRadius.circular(8), 
+              borderRadius: BorderRadius.circular(8),
             ),
-            padding: const EdgeInsets.all(
-                8),    child: SvgPicture.asset(
+            padding: const EdgeInsets.all(8),
+            child: SvgPicture.asset(
               svgAssetPath,
               height: 40,
               width: 40,
-              color: Colors
-                  .black,),
+              color: Colors.black,
+            ),
           ),
-          const SizedBox(height: 5), 
+          const SizedBox(height: 5),
           Text(
             title,
-            style: const TextStyle(color: Color(0xFFC0028B)), 
+            style: const TextStyle(color: Color(0xFFC0028B)),
           ),
         ],
       ),
     );
   }
-
 }
