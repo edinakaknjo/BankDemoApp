@@ -9,14 +9,14 @@ import 'package:moneyapp/features/transactions/pages/transactions_page.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: '/login', 
+    initialLocation: '/login',
     routes: [
       GoRoute(
-        path: '/', 
+        path: '/',
         builder: (context, state) => const TransactionsPage(),
       ),
       GoRoute(
-        path: '/login', 
+        path: '/login',
         builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
@@ -24,13 +24,10 @@ class AppRouter {
         builder: (context, state) => const SignupPage(),
       ),
       GoRoute(
-         path: '/pay',
-  builder: (context, state) => PayPage(isTopUp: state.extra as bool? ?? false),  // Pass the isTopUp value here
-
-       // builder: (context, state) {
-       //   final isTopUp = state.extra as bool? ?? false; // Retrieve the `extra` data
-       //   return PayPage(isTopUp: isTopUp); // Pass `isTopUp` to PayPage
-       // },
+        path: '/pay',
+        builder: (context, state) => PayPage(
+            isTopUp:
+                state.extra as bool? ?? false), // Pass the isTopUp value here
       ),
       GoRoute(
         path: '/pay_who',

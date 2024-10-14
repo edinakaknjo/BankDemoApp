@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:moneyapp/common/blocs/transactions_event.dart';
-import '../../../common/blocs/transactions_bloc.dart';
+import '../../../common/cubit/transactions_cubit.dart';
 
 class PayWhoPage extends StatefulWidget {
   const PayWhoPage({super.key});
@@ -56,11 +55,11 @@ class PayWhoPageState extends State<PayWhoPage> {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  BlocProvider.of<TransactionsBloc>(context).add(AddTransaction(
-                    name: _controller.text,
-                    amount: double.parse(amount),
-                    isTopUp: isTopUp,
-                  ));
+                  BlocProvider.of<TransactionsCubit>(context).addTransaction(
+                    _controller.text,
+                    double.parse(amount),
+                    isTopUp,
+                  );
 
                   context.push('/transaction_details',
                       extra: {'amount': amount, 'name': _controller.text});

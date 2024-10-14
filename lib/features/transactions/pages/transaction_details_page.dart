@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart'; 
-import '../../../common/blocs/transactions_bloc.dart';
-import '../../../common/blocs/transactions_event.dart';
+import 'package:go_router/go_router.dart';
+import '../../../common/cubit/transactions_cubit.dart';
 
 class TransactionDetailsPage extends StatelessWidget {
   const TransactionDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic>? transactionData = GoRouterState.of(context).extra as Map<String, dynamic>?;
+    final Map<String, dynamic>? transactionData =
+        GoRouterState.of(context).extra as Map<String, dynamic>?;
 
     if (transactionData == null) {
       return Scaffold(
@@ -39,17 +39,19 @@ class TransactionDetailsPage extends StatelessWidget {
       final double originalAmount = double.parse(amount);
       final double halfAmount = originalAmount / 2;
 
-      BlocProvider.of<TransactionsBloc>(context).add(AddTransaction(
-        name: name,
-        amount: halfAmount,
-        isTopUp: true,
-      ));
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Bill split. £$halfAmount returned and £$halfAmount paid.')),
+      BlocProvider.of<TransactionsCubit>(context).addTransaction(
+        name,
+        halfAmount,
+        true,
       );
 
-        context.go('/');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(
+                'Bill split. £$halfAmount returned and £$halfAmount paid.')),
+      );
+
+      context.go('/');
     }
 
     return Scaffold(
@@ -64,7 +66,7 @@ class TransactionDetailsPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-           context.go('/');
+            context.go('/');
           },
         ),
       ),
@@ -75,15 +77,20 @@ class TransactionDetailsPage extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(Icons.shopping_bag, size: 50, color: Color(0xFFC0028B)),
+                const Icon(Icons.shopping_bag,
+                    size: 50, color: Color(0xFFC0028B)),
                 const SizedBox(width: 10),
-                Text(name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                Text(name,
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold)),
               ],
             ),
             const SizedBox(height: 20),
             Text('£$amount.00',
                 style: const TextStyle(
-                    fontSize: 48, fontWeight: FontWeight.bold, color: Color(0xFFC0028B))),
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFC0028B))),
             const SizedBox(height: 20),
             ListTile(
               leading: const Icon(Icons.receipt),
@@ -104,14 +111,17 @@ class TransactionDetailsPage extends StatelessWidget {
                   value: false,
                   onChanged: (value) {
                     if (value) {
-                      BlocProvider.of<TransactionsBloc>(context).add(AddTransaction(
-                        name: name,
-                        amount: double.parse(amount),
-                        isTopUp: false,
-                      ));
+                      BlocProvider.of<TransactionsCubit>(context)
+                          .addTransaction(
+                        name,
+                        double.parse(amount),
+                        false,
+                      );
 
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Repeating payment created for £$amount')),
+                        SnackBar(
+                            content:
+                                Text('Repeating payment created for £$amount')),
                       );
                     }
                   },

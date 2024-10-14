@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../common/blocs/transactions_bloc.dart';
-import '../../../common/blocs/transactions_event.dart';
-import '../../../common/blocs/transactions_state.dart';
+import '../../../common/cubit/transactions_cubit.dart';
+import '../../../common/cubit/transactions_state.dart';
 import 'package:go_router/go_router.dart';
 
 class LoanPage extends StatefulWidget {
@@ -63,7 +62,7 @@ class LoanPageState extends State<LoanPage> {
         ),
         SizedBox(height: 16),
         Text(
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam elementum enim non neque luctus, nec blandit ipsum sagittis. Sed fringilla blandit nibh, sit amet suscipit massa sollicitudin lacinia. Donec cursus, odio sit amet tincidunt sodales, odio nisl hendrerit sem, tempor tincidunt ligula nisl nec ante. Nulla aliquet aliquam justo, ac bibendum orci rhoncus non. Nullam quis ex elementum, pharetra ligula eleifend, convallis nulla. Nulla sit amet nisi viverra, semper nunc eu, posuere dui. Donec at metus ut eros rhoncus vestibulum vitae at lacus. Etiam imperdiet, nulla ac condimentum aliquam, enim lacus fringilla leo, vel hendrerit mi ipsum et ante. Vivamus finibus mauris eget diam sodales, eget efficitur orci laoreet. Sed feugiat odio quis mattis tristique. Mauris sit amet sem mauris.',
           style: TextStyle(fontSize: 16),
         ),
         SizedBox(height: 20),
@@ -149,7 +148,7 @@ class LoanPageState extends State<LoanPage> {
   }
 
   Widget _buildLoanButton() {
-    return BlocConsumer<TransactionsBloc, TransactionsState>(
+    return BlocConsumer<TransactionsCubit, TransactionsState>(
       listener: (context, state) {
         if (state.loanApproved != null) {
           _showLoanDialog(context, state.loanApproved!);
@@ -187,13 +186,11 @@ class LoanPageState extends State<LoanPage> {
   }
 
   void _applyForLoan(BuildContext context) {
-    context.read<TransactionsBloc>().add(
-          ApplyForLoan(
-            loanAmount: double.parse(_loanAmountController.text),
-            term: int.parse(_termController.text),
-            monthlySalary: double.parse(_monthlySalaryController.text),
-            monthlyExpenses: double.parse(_monthlyExpensesController.text),
-          ),
+    context.read<TransactionsCubit>().applyForLoan(
+          double.parse(_loanAmountController.text),
+          int.parse(_termController.text),
+          double.parse(_monthlySalaryController.text),
+          double.parse(_monthlyExpensesController.text),
         );
   }
 

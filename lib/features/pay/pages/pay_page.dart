@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
-import 'package:moneyapp/features/pay/pages/pay_who_page.dart';
-import 'package:moneyapp/features/transactions/pages/transactions_page.dart';
-
 
 class PayPage extends StatefulWidget {
   final bool isTopUp;
 
-  const PayPage({super.key, required this.isTopUp}); 
+  const PayPage({super.key, required this.isTopUp});
 
   @override
   PayPageState createState() => PayPageState();
