@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moneyapp/pages/transactions_page.dart';
-import '../blocs/transactions/transactions_bloc.dart';
-import '../blocs/transactions/transactions_event.dart';
+import '../cubit/transactions/transactions_cubit.dart';
 
 class TransactionDetailsPage extends StatelessWidget {
   const TransactionDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Safely handle arguments to avoid null errors
     final transactionData =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
@@ -33,33 +31,25 @@ class TransactionDetailsPage extends StatelessWidget {
       );
     }
 
-    final String amount =
-        transactionData['amount'] ?? '0'; // Default to '0' if null
-    final String name =
-        transactionData['name'] ?? 'Unknown'; // Default to 'Unknown' if null
-    final String type = transactionData['type'] ??
-        'PAYMENT'; // Default to 'PAYMENT' if type is null
+    final String amount = transactionData['amount'] ?? '0';
+    final String name = transactionData['name'] ?? 'Unknown';
+    final String type = transactionData['type'] ?? 'PAYMENT';
 
     void splitTheBill() {
       final double originalAmount = double.parse(amount);
       final double halfAmount = originalAmount / 2;
 
-      BlocProvider.of<TransactionsBloc>(context).add(AddTransaction(
-        name: name,
-        amount: halfAmount,
-        isTopUp: true,
-      ));
-
-      //  BlocProvider.of<TransactionsBloc>(context).add(AddTransaction(
-      //    name: name,
-      //    amount: halfAmount,
-      //    isTopUp: false,
-      //  ));
+      BlocProvider.of<TransactionsCubit>(context).addTransaction(
+        name,
+        halfAmount,
+        true,
+      );
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(
-                'Bill split. £$halfAmount returned and £$halfAmount paid.')),
+          content:
+              Text('Bill split. £$halfAmount returned and £$halfAmount paid.'),
+        ),
       );
 
       Navigator.pushAndRemoveUntil(
@@ -130,17 +120,18 @@ class TransactionDetailsPage extends StatelessWidget {
                   value: false,
                   onChanged: (value) {
                     if (value) {
-                      BlocProvider.of<TransactionsBloc>(context)
-                          .add(AddTransaction(
-                        name: name,
-                        amount: double.parse(amount),
-                        isTopUp: false,
-                      ));
+                      BlocProvider.of<TransactionsCubit>(context)
+                          .addTransaction(
+                        name,
+                        double.parse(amount),
+                        false,
+                      );
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                            content:
-                                Text('Repeating payment created for £$amount')),
+                          content:
+                              Text('Repeating payment created for £$amount'),
+                        ),
                       );
                     }
                   },

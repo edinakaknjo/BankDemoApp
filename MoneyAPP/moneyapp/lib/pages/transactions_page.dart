@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../blocs/transactions/transactions_bloc.dart';
-import '../blocs/transactions/transactions_state.dart';
+import '../cubit/transactions/transactions_cubit.dart';
+import '../cubit/transactions/transactions_state.dart';
 
 class TransactionsPage extends StatelessWidget {
   const TransactionsPage({super.key});
@@ -23,16 +23,15 @@ class TransactionsPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Balance Section
           Container(
             padding: const EdgeInsets.symmetric(vertical: 20),
             color: const Color(0xFFC0028B),
             child: Column(
               children: [
-                BlocBuilder<TransactionsBloc, TransactionsState>(
+                BlocBuilder<TransactionsCubit, TransactionsState>(
                   builder: (context, state) {
                     return Text(
-                      '£${state.balance.toStringAsFixed(2)}', //
+                      '£${state.balance.toStringAsFixed(2)}',
                       style: const TextStyle(
                         fontSize: 48,
                         color: Colors.white,
@@ -42,7 +41,6 @@ class TransactionsPage extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 20),
-                // Buttons Section (Pay, Top Up, Loan)
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
@@ -65,7 +63,6 @@ class TransactionsPage extends StatelessWidget {
               ],
             ),
           ),
-
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(16),
@@ -76,7 +73,7 @@ class TransactionsPage extends StatelessWidget {
                   topRight: Radius.circular(20),
                 ),
               ),
-              child: BlocBuilder<TransactionsBloc, TransactionsState>(
+              child: BlocBuilder<TransactionsCubit, TransactionsState>(
                 builder: (context, state) {
                   return ListView.builder(
                     itemCount: state.transactions.length,
@@ -84,12 +81,10 @@ class TransactionsPage extends StatelessWidget {
                       final transaction = state.transactions[index];
                       final isTopUp = transaction.isTopUp;
 
-                      // Select appropriate SVG icon path
                       final svgAssetPath = isTopUp
                           ? 'assets/icons/topup_icon.svg'
                           : 'assets/icons/payment_icon.svg';
 
-                      // Set colors and amount display
                       final amountColor =
                           isTopUp ? const Color(0xFFC0028B) : Colors.black;
                       final amountPrefix = isTopUp ? "+" : " ";
@@ -133,71 +128,28 @@ class TransactionsPage extends StatelessWidget {
       },
       child: Column(
         children: [
-          // Container to wrap the SVG and provide a black background
           Container(
             height: 60,
             width: 60,
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius:
-                  BorderRadius.circular(8), // Optional: rounded corners
+              borderRadius: BorderRadius.circular(8),
             ),
-            padding: const EdgeInsets.all(
-                8), // Optional: padding inside the container
+            padding: const EdgeInsets.all(8),
             child: SvgPicture.asset(
               svgAssetPath,
               height: 40,
               width: 40,
-              color: Colors
-                  .black, // Set the color of the SVG to white for visibility on black background
+              color: Colors.black,
             ),
           ),
-          const SizedBox(height: 5), // Space between the icon and the text
+          const SizedBox(height: 5),
           Text(
             title,
-            style: const TextStyle(color: Color(0xFFC0028B)), // Text color
+            style: const TextStyle(color: Color(0xFFC0028B)),
           ),
         ],
       ),
     );
   }
-/*
-Widget buildTransactionTile(Transaction transaction) {
-  final svgAssetPath = transaction.isTopUp
-      ? 'assets/icons/topup_icon.svg'    // Path for top-up icon
-      : 'assets/icons/payment_icon.svg'; // Path for payment icon
-
-  return ListTile(
-    leading: Container(
-      height: 40,
-      width: 40,
-      padding: const EdgeInsets.all(8), // Optional padding for the SVG
-      decoration: BoxDecoration(
-        color: Colors.white, // Optional: background color for the icon
-        borderRadius: BorderRadius.circular(8), // Optional: rounded corners
-      ),
-      child: SvgPicture.asset(
-        svgAssetPath,
-        height: 30,
-        width: 30,
-        color: transaction.isTopUp ? const Color(0xFFC0028B) : Colors.black, // Color for top-up/payment
-      ),
-    ),
-    title: Text(
-      transaction.name,
-      style: const TextStyle(fontWeight: FontWeight.bold),
-    ),
-    trailing: Text(
-      '${transaction.isTopUp ? '+' : ' '}${transaction.amount.toStringAsFixed(2)}',
-      style: TextStyle(
-        fontWeight: FontWeight.bold,
-        color: transaction.isTopUp ?const Color(0xFFC0028B) : Colors.black,
-      ),
-    ),
-  );
-}
-
-
-
-*/
 }

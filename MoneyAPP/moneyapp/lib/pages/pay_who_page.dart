@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moneyapp/blocs/transactions/transactions_event.dart';
-import '../blocs/transactions/transactions_bloc.dart';
+import '../cubit/transactions/transactions_cubit.dart';
 
 class PayWhoPage extends StatefulWidget {
   const PayWhoPage({super.key});
@@ -15,11 +14,10 @@ class PayWhoPageState extends State<PayWhoPage> {
 
   @override
   Widget build(BuildContext context) {
-    // amount and isTopUp flag passed from PayPage
     final Map<String, dynamic> args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final String amount = args['amount'] as String; // Get the amount
-    final bool isTopUp = args['isTopUp'] as bool; // Get the isTopUp flag
+    final String amount = args['amount'] as String;
+    final bool isTopUp = args['isTopUp'] as bool;
 
     return Scaffold(
       appBar: AppBar(
@@ -56,11 +54,11 @@ class PayWhoPageState extends State<PayWhoPage> {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  BlocProvider.of<TransactionsBloc>(context).add(AddTransaction(
-                    name: _controller.text,
-                    amount: double.parse(amount),
-                    isTopUp: isTopUp,
-                  ));
+                  BlocProvider.of<TransactionsCubit>(context).addTransaction(
+                    _controller.text,
+                    double.parse(amount),
+                    isTopUp,
+                  );
 
                   Navigator.pushNamed(context, '/transaction_details',
                       arguments: {'amount': amount, 'name': _controller.text});
@@ -81,4 +79,3 @@ class PayWhoPageState extends State<PayWhoPage> {
     );
   }
 }
-//problem duplo vracanje paywho paypage
