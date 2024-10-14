@@ -1,4 +1,4 @@
-import '../../models/transaction_model.dart';
+import '../../features/transactions/transaction_model.dart';
 
 class TransactionsState {
   final List<Transaction> transactions;

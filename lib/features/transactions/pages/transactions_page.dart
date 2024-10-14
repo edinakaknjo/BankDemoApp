@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../cubit/transactions/transactions_cubit.dart';
-import '../cubit/transactions/transactions_state.dart';
+import '../../../common/cubit/transactions_cubit.dart';
+import '../../../common/cubit/transactions_state.dart';
 
 class TransactionsPage extends StatelessWidget {
   const TransactionsPage({super.key});
