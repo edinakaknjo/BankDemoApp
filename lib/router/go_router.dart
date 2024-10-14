@@ -25,9 +25,8 @@ class AppRouter {
       ),
       GoRoute(
         path: '/pay',
-        builder: (context, state) => PayPage(
-            isTopUp:
-                state.extra as bool? ?? false), // Pass the isTopUp value here
+        builder: (context, state) =>
+            PayPage(isTopUp: state.extra as bool? ?? false),
       ),
       GoRoute(
         path: '/pay_who',
