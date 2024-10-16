@@ -31,7 +31,13 @@ class AppRouter {
       ),
       GoRoute(
         path: '/pay_who',
-        builder: (context, state) => const PayWhoPage(),
+        builder: (context, state) {
+          final args = state.extra as Map<String, dynamic>;
+          final String amount = args['amount'] as String;
+          final bool isTopUp = args['isTopUp'] as bool;
+
+          return PayWhoPage(amount: amount, isTopUp: isTopUp);
+        },
       ),
       GoRoute(
         path: '/transaction_details',

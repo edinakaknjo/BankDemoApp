@@ -15,7 +15,7 @@ class LoginPage extends HookWidget {
       TextEditingController passwordController) async {
     try {
       await cubit.login(emailController.text, passwordController.text);
-      AppRouter.router.go('/');
+      AppRouter.router.push('/');
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login failed: ${e.toString()}')),
@@ -68,7 +68,7 @@ class LoginPage extends HookWidget {
               ),
               TextButton(
                 onPressed: () {
-                  context.go(AppRouter.signup);
+                  context.push(AppRouter.signup);
                 },
                 child: const Text('Sign up',
                     style: TextStyle(color: Colors.white)),

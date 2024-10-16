@@ -69,7 +69,7 @@ class PayPage extends HookWidget {
                   onPressed: () {
                     logger.info(
                         'Proceeding with payment: amount=${amount.value}, isTopUp=$isTopUp');
-                    context.go('/pay_who',
+                    context.push('/pay_who',
                         extra: {'amount': amount.value, 'isTopUp': isTopUp});
                   },
                   style: ElevatedButton.styleFrom(

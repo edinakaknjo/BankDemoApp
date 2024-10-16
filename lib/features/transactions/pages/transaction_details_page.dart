@@ -51,7 +51,7 @@ class TransactionDetailsPage extends StatelessWidget {
                 'Bill split. £$halfAmount returned and £$halfAmount paid.')),
       );
 
-      context.go('/');
+      context.push('/');
     }
 
     return Scaffold(
@@ -66,7 +66,7 @@ class TransactionDetailsPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            context.go('/');
+            context.push('/');
           },
         ),
       ),

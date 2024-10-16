@@ -125,7 +125,7 @@ class TransactionsPage extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       onPressed: () {
-        context.go(route, extra: isTopUp);
+        context.push(route, extra: isTopUp);
       },
       child: Column(
         children: [

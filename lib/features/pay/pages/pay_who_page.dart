@@ -5,15 +5,18 @@ import 'package:go_router/go_router.dart';
 import '../../../common/cubit/transactions_cubit.dart';
 
 class PayWhoPage extends HookWidget {
-  const PayWhoPage({super.key});
+  final String amount;
+  final bool isTopUp;
+
+  const PayWhoPage({
+    super.key,
+    required this.amount,
+    required this.isTopUp,
+  });
 
   @override
   Widget build(BuildContext context) {
     final TextEditingController controller = useTextEditingController();
-    final Map<String, dynamic> args =
-        GoRouterState.of(context).extra as Map<String, dynamic>;
-    final String amount = args['amount'] as String;
-    final bool isTopUp = args['isTopUp'] as bool;
 
     return Scaffold(
       appBar: AppBar(
