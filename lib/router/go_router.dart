@@ -8,6 +8,7 @@ import 'package:moneyapp/features/transactions/pages/transaction_details_page.da
 import 'package:moneyapp/features/transactions/pages/transactions_page.dart';
 
 class AppRouter {
+  static const String signup = '/signup';
   static final GoRouter router = GoRouter(
     initialLocation: '/login',
     routes: [

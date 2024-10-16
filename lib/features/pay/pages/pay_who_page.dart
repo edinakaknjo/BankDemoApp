@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../common/cubit/transactions_cubit.dart';
 
-class PayWhoPage extends StatefulWidget {
+class PayWhoPage extends HookWidget {
   const PayWhoPage({super.key});
 
   @override
-  PayWhoPageState createState() => PayWhoPageState();
-}
-
-class PayWhoPageState extends State<PayWhoPage> {
-  final TextEditingController _controller = TextEditingController();
-
-  @override
   Widget build(BuildContext context) {
+    final TextEditingController controller = useTextEditingController();
     final Map<String, dynamic> args =
         GoRouterState.of(context).extra as Map<String, dynamic>;
     final String amount = args['amount'] as String;
@@ -40,7 +35,7 @@ class PayWhoPageState extends State<PayWhoPage> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: TextField(
-                  controller: _controller,
+                  controller: controller,
                   decoration: const InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
@@ -56,13 +51,13 @@ class PayWhoPageState extends State<PayWhoPage> {
               ElevatedButton(
                 onPressed: () {
                   BlocProvider.of<TransactionsCubit>(context).addTransaction(
-                    _controller.text,
+                    controller.text,
                     double.parse(amount),
                     isTopUp,
                   );
 
                   context.push('/transaction_details',
-                      extra: {'amount': amount, 'name': _controller.text});
+                      extra: {'amount': amount, 'name': controller.text});
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,

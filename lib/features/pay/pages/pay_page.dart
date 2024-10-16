@@ -1,43 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 
-class PayPage extends StatefulWidget {
+class PayPage extends HookWidget {
   final bool isTopUp;
 
   const PayPage({super.key, required this.isTopUp});
 
   @override
-  PayPageState createState() => PayPageState();
-}
+  Widget build(BuildContext context) {
+    final Logger logger = Logger('PayPage');
+    final amount = useState('0');
 
-class PayPageState extends State<PayPage> {
-  final Logger _logger = Logger('PayPage');
-  String amount = '0';
+    useEffect(() {
+      logger.info('PayPage initialized with isTopUp=$isTopUp');
+      return null;
+    }, []);
 
-  @override
-  void initState() {
-    super.initState();
-    _logger.info('PayPage initialized with isTopUp=${widget.isTopUp}');
-  }
-
-  void _onKeyPressed(String key) {
-    setState(() {
+    void onKeyPressed(String key) {
       if (key == 'C') {
-        amount = '0';
+        amount.value = '0';
       } else {
-        if (amount == '0') {
-          amount = key;
+        if (amount.value == '0') {
+          amount.value = key;
         } else {
-          amount += key;
+          amount.value += key;
         }
       }
-      _logger.info('Amount updated: $amount');
-    });
-  }
+      logger.info('Amount updated: ${amount.value}');
+    }
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFC0028B),
@@ -61,7 +54,7 @@ class PayPageState extends State<PayPage> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  '£$amount.00',
+                  '£${amount.value}.00',
                   style: const TextStyle(
                       fontSize: 48,
                       color: Colors.white,
@@ -71,20 +64,20 @@ class PayPageState extends State<PayPage> {
             ),
             Column(
               children: [
-                _buildNumberPad(),
+                buildNumberPad(onKeyPressed),
                 ElevatedButton(
                   onPressed: () {
-                    _logger.info(
-                        'Proceeding with payment: amount=$amount, isTopUp=${widget.isTopUp}');
+                    logger.info(
+                        'Proceeding with payment: amount=${amount.value}, isTopUp=$isTopUp');
                     context.go('/pay_who',
-                        extra: {'amount': amount, 'isTopUp': widget.isTopUp});
+                        extra: {'amount': amount.value, 'isTopUp': isTopUp});
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                         vertical: 20, horizontal: 100),
                   ),
-                  child: Text(widget.isTopUp ? 'Top Up Next' : 'Next',
+                  child: Text(isTopUp ? 'Top Up Next' : 'Next',
                       style: const TextStyle(
                           color: Color(0xFFC0028B), fontSize: 18)),
                 ),
@@ -97,14 +90,14 @@ class PayPageState extends State<PayPage> {
     );
   }
 
-  Widget _buildNumberPad() {
+  Widget buildNumberPad(void Function(String) onKeyPressed) {
     return GridView.count(
       crossAxisCount: 3,
       shrinkWrap: true,
       children: [
         ...[1, 2, 3, 4, 5, 6, 7, 8, 9, 'C', 0].map((key) {
           return TextButton(
-            onPressed: () => _onKeyPressed(key.toString()),
+            onPressed: () => onKeyPressed(key.toString()),
             child: Text(key.toString(),
                 style: const TextStyle(color: Colors.white, fontSize: 24)),
           );

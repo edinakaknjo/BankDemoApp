@@ -43,6 +43,8 @@ dependencies:
   injectable: ^2.5.0
   retrofit: ^4.4.1
   logging: ^1.2.0
+  flutter_hooks: ^0.20.5
+  get_it: ^8.0.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0

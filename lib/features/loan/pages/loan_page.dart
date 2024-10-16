@@ -62,7 +62,7 @@ class LoanPageState extends State<LoanPage> {
         ),
         SizedBox(height: 16),
         Text(
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam elementum enim non neque luctus, nec blandit ipsum sagittis. Sed fringilla blandit nibh, sit amet suscipit massa sollicitudin lacinia. Donec cursus, odio sit amet tincidunt sodales, odio nisl hendrerit sem, tempor tincidunt ligula nisl nec ante. Nulla aliquet aliquam justo, ac bibendum orci rhoncus non. Nullam quis ex elementum, pharetra ligula eleifend, convallis nulla. Nulla sit amet nisi viverra, semper nunc eu, posuere dui. Donec at metus ut eros rhoncus vestibulum vitae at lacus. Etiam imperdiet, nulla ac condimentum aliquam, enim lacus fringilla leo, vel hendrerit mi ipsum et ante. Vivamus finibus mauris eget diam sodales, eget efficitur orci laoreet. Sed feugiat odio quis mattis tristique. Mauris sit amet sem mauris.',
+          'Lorem ipsum dolor sit amet...',
           style: TextStyle(fontSize: 16),
         ),
         SizedBox(height: 20),
@@ -152,6 +152,13 @@ class LoanPageState extends State<LoanPage> {
       listener: (context, state) {
         if (state.loanApproved != null) {
           _showLoanDialog(context, state.loanApproved!);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                  'Error processing loan application. Please try again later.'),
+            ),
+          );
         }
       },
       builder: (context, state) {
