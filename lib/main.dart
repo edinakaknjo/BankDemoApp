@@ -1,20 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moneyapp/features/loan/pages/loan_page.dart';
-import 'package:moneyapp/features/transactions/pages/transaction_details_page.dart';
+import 'package:moneyapp/router/go_router.dart';
 import 'common/cubit/transactions_cubit.dart';
-import 'features/pay/pages/pay_page.dart';
-import 'features/pay/pages/pay_who_page.dart';
-import 'features/transactions/pages/transactions_page.dart';
-import 'package:dio/dio.dart';
 import 'common/source/api_source.dart';
+import 'package:dio/dio.dart';
+import 'common/cubit/login_cubit.dart';
+import 'common/cubit/signup_cubit.dart';
+import 'common/firebase/firebase_module.dart';
 
-void main() {
+Future<void> main() async {
+  await setupFirebase(); // Call your firebase setup
+
   final dio = Dio();
   final apiSource = ApiDataSource(dio);
+
   runApp(
-    BlocProvider(
-      create: (context) => TransactionsCubit(apiSource),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => TransactionsCubit(apiSource),
+        ),
+        BlocProvider(
+          create: (context) => LoginCubit(),
+        ),
+        BlocProvider(
+          create: (context) => SignupCubit(),
+        ),
+      ],
       child: const MoneyApp(),
     ),
   );
@@ -25,17 +37,10 @@ class MoneyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'MoneyApp',
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const TransactionsPage(),
-        '/pay': (context) => const PayPage(),
-        '/pay_who': (context) => const PayWhoPage(),
-        '/transaction_details': (context) => const TransactionDetailsPage(),
-        '/loan': (context) => const LoanPage(),
-      },
+      routerConfig: AppRouter.router,
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/cubit/transactions_cubit.dart';
 import '../../../common/cubit/transactions_state.dart';
+import 'package:go_router/go_router.dart';
 
 class LoanPage extends StatefulWidget {
   const LoanPage({super.key});
@@ -30,7 +31,7 @@ class LoanPageState extends State<LoanPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            context.go('/');
           },
         ),
       ),
@@ -151,6 +152,13 @@ class LoanPageState extends State<LoanPage> {
       listener: (context, state) {
         if (state.loanApproved != null) {
           _showLoanDialog(context, state.loanApproved!);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                  'Error processing loan application. Please try again later.'),
+            ),
+          );
         }
       },
       builder: (context, state) {
@@ -207,7 +215,7 @@ class LoanPageState extends State<LoanPage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                context.go('/');
               },
               child: const Text('OK'),
             ),
