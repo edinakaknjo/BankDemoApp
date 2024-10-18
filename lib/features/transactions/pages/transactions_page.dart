@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import '../../../common/cubit/transactions_cubit.dart';
 import '../../../common/cubit/transactions_state.dart';
 
@@ -94,7 +95,8 @@ class TransactionsPage extends StatelessWidget {
                           svgAssetPath,
                           height: 40,
                           width: 40,
-                          color: amountColor,
+                          colorFilter:
+                              ColorFilter.mode(amountColor, BlendMode.srcIn),
                         ),
                         title: Text(transaction.name),
                         trailing: Text(
@@ -124,7 +126,7 @@ class TransactionsPage extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       onPressed: () {
-        Navigator.pushNamed(context, route, arguments: isTopUp);
+        context.push(route, extra: isTopUp);
       },
       child: Column(
         children: [
@@ -140,7 +142,7 @@ class TransactionsPage extends StatelessWidget {
               svgAssetPath,
               height: 40,
               width: 40,
-              color: Colors.black,
+              colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn),
             ),
           ),
           const SizedBox(height: 5),

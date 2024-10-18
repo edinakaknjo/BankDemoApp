@@ -1,20 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moneyapp/features/loan/pages/loan_page.dart';
-import 'package:moneyapp/features/transactions/pages/transaction_details_page.dart';
-import 'common/cubit/transactions_cubit.dart';
-import 'features/pay/pages/pay_page.dart';
-import 'features/pay/pages/pay_who_page.dart';
-import 'features/transactions/pages/transactions_page.dart';
+import 'package:moneyapp/common/cubit/login_cubit.dart';
+import 'package:moneyapp/common/cubit/signup_cubit.dart';
+import 'package:moneyapp/router/go_router.dart';
 import 'package:dio/dio.dart';
+import 'common/cubit/transactions_cubit.dart';
 import 'common/source/api_source.dart';
+import 'injectable.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await configureDependencies();
   final dio = Dio();
   final apiSource = ApiDataSource(dio);
+
   runApp(
-    BlocProvider(
-      create: (context) => TransactionsCubit(apiSource),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => TransactionsCubit(apiSource),
+        ),
+        BlocProvider(
+          create: (context) => getIt<LoginCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<SignupCubit>(),
+        ),
+      ],
       child: const MoneyApp(),
     ),
   );
@@ -25,17 +38,10 @@ class MoneyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'MoneyApp',
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const TransactionsPage(),
-        '/pay': (context) => const PayPage(),
-        '/pay_who': (context) => const PayWhoPage(),
-        '/transaction_details': (context) => const TransactionDetailsPage(),
-        '/loan': (context) => const LoanPage(),
-      },
+      routerConfig: AppRouter.router,
     );
   }
 }
