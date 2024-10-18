@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart'; // Import getIt
 import 'package:moneyapp/common/cubit/signup_cubit.dart';
 
 class SignupPage extends HookWidget {
@@ -30,7 +31,8 @@ class SignupPage extends HookWidget {
     final passwordController = useTextEditingController();
 
     return BlocProvider(
-      create: (_) => SignupCubit(),
+      create: (_) =>
+          GetIt.instance<SignupCubit>(), // Use getIt to get SignupCubit
       child: Scaffold(
         backgroundColor: const Color(0xFFC0028B),
         body: Padding(
