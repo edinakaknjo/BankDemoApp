@@ -95,8 +95,7 @@ class TransactionsPage extends StatelessWidget {
                           svgAssetPath,
                           height: 40,
                           width: 40,
-                          colorFilter:
-                              ColorFilter.mode(amountColor, BlendMode.srcIn),
+                          color: amountColor,
                         ),
                         title: Text(transaction.name),
                         trailing: Text(
@@ -142,7 +141,7 @@ class TransactionsPage extends StatelessWidget {
               svgAssetPath,
               height: 40,
               width: 40,
-              colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcIn),
+              color: Colors.black,
             ),
           ),
           const SizedBox(height: 5),

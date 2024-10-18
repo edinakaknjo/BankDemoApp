@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moneyapp/common/cubit/login_cubit.dart';
-import 'package:moneyapp/common/cubit/signup_cubit.dart';
 import 'package:moneyapp/router/go_router.dart';
-import 'package:dio/dio.dart';
 import 'common/cubit/transactions_cubit.dart';
 import 'common/source/api_source.dart';
-import 'injectable.dart'; // Import for configureDependencies()
+import 'package:dio/dio.dart';
+import 'common/cubit/login_cubit.dart';
+import 'common/cubit/signup_cubit.dart';
+import 'common/firebase/firebase_module.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize Firebase and GetIt dependencies
-  await configureDependencies(); // Initializes GetIt and registers dependencies
+  await setupFirebase(); // Call your firebase setup
 
   final dio = Dio();
   final apiSource = ApiDataSource(dio);
@@ -24,12 +21,10 @@ Future<void> main() async {
           create: (context) => TransactionsCubit(apiSource),
         ),
         BlocProvider(
-          create: (context) =>
-              getIt<LoginCubit>(), // Use getIt to resolve dependencies
+          create: (context) => LoginCubit(),
         ),
         BlocProvider(
-          create: (context) =>
-              getIt<SignupCubit>(), // Use getIt to resolve dependencies
+          create: (context) => SignupCubit(),
         ),
       ],
       child: const MoneyApp(),
