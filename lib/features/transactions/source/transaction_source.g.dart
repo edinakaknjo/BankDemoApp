@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'api_source.dart';
+part of 'transaction_source.dart';
 
 // **************************************************************************
 // RetrofitGenerator

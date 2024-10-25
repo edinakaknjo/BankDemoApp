@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moneyapp/common/cubit/login_cubit.dart';
 import 'package:moneyapp/common/cubit/login_state.dart';
+import 'package:moneyapp/injectable.dart';
 import 'package:moneyapp/router/go_router.dart';
-import 'package:get_it/get_it.dart';
 
 class LoginPage extends HookWidget {
   const LoginPage({super.key});
@@ -16,7 +16,7 @@ class LoginPage extends HookWidget {
     final passwordController = useTextEditingController();
 
     return BlocProvider(
-      create: (_) => GetIt.instance<LoginCubit>(),
+      create: (_) => getIt<LoginCubit>(),
       child: Scaffold(
         backgroundColor: const Color(0xFFC0028B),
         body: BlocListener<LoginCubit, LoginState>(
