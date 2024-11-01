@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../common/cubit/transactions_cubit.dart';
 
 class TransactionDetailsPage extends StatelessWidget {
@@ -17,22 +18,22 @@ class TransactionDetailsPage extends StatelessWidget {
           backgroundColor: const Color(0xFFC0028B),
           elevation: 0,
           centerTitle: true,
-          title: const Text(
-            'Transaction Details',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          title: Text(
+            'transaction_details'.tr(),
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ),
-        body: const Center(
+        body: Center(
           child: Text(
-            'Error: No transaction data available.',
-            style: TextStyle(fontSize: 18, color: Colors.red),
+            'error_no_data'.tr(),
+            style: const TextStyle(fontSize: 18, color: Colors.red),
           ),
         ),
       );
     }
 
     final String amount = transactionData['amount'] ?? '0';
-    final String name = transactionData['name'] ?? 'Unknown';
+    final String name = transactionData['name'] ?? 'unknown'.tr();
     final String type = transactionData['type'] ?? 'PAYMENT';
 
     void splitTheBill() {
@@ -47,8 +48,8 @@ class TransactionDetailsPage extends StatelessWidget {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text(
-                'Bill split. £$halfAmount returned and £$halfAmount paid.')),
+            content:
+                Text('bill_split_message'.tr(args: [halfAmount.toString()]))),
       );
 
       context.push('/');
@@ -59,9 +60,9 @@ class TransactionDetailsPage extends StatelessWidget {
         backgroundColor: const Color(0xFFC0028B),
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'Transaction Details',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        title: Text(
+          'transaction_details'.tr(),
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -94,19 +95,19 @@ class TransactionDetailsPage extends StatelessWidget {
             const SizedBox(height: 20),
             ListTile(
               leading: const Icon(Icons.receipt),
-              title: const Text('Add receipt'),
+              title: Text('add_receipt'.tr()),
               onTap: () {},
             ),
             if (type == 'PAYMENT')
               ListTile(
                 leading: const Icon(Icons.call_split),
-                title: const Text('Split this bill'),
+                title: Text('split_bill'.tr()),
                 onTap: splitTheBill,
               ),
             if (type == 'PAYMENT')
               ListTile(
                 leading: const Icon(Icons.repeat),
-                title: const Text('Repeating payment'),
+                title: Text('repeating_payment'.tr()),
                 trailing: Switch(
                   value: false,
                   onChanged: (value) {
@@ -120,8 +121,8 @@ class TransactionDetailsPage extends StatelessWidget {
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                            content:
-                                Text('Repeating payment created for £$amount')),
+                            content: Text('repeating_payment_message'
+                                .tr(args: [amount]))),
                       );
                     }
                   },
@@ -129,20 +130,20 @@ class TransactionDetailsPage extends StatelessWidget {
               ),
             ListTile(
               leading: const Icon(Icons.error),
-              title: const Text('Something wrong?'),
+              title: Text('something_wrong'.tr()),
               onTap: () {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: const Text('Help'),
-                      content: const Text('Help is on the way, stay put!'),
+                      title: Text('help'.tr()),
+                      content: Text('help_message'.tr()),
                       actions: [
                         TextButton(
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: const Text('OK'),
+                          child: Text('ok'.tr()),
                         ),
                       ],
                     );
