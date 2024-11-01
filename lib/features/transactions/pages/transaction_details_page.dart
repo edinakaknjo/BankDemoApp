@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moneyapp/features/transactions/pages/transactions_page.dart';
+import 'package:go_router/go_router.dart';
 import '../../../common/cubit/transactions_cubit.dart';
 
 class TransactionDetailsPage extends StatelessWidget {
@@ -8,8 +8,8 @@ class TransactionDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final transactionData =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final Map<String, dynamic>? transactionData =
+        GoRouterState.of(context).extra as Map<String, dynamic>?;
 
     if (transactionData == null) {
       return Scaffold(
@@ -47,16 +47,11 @@ class TransactionDetailsPage extends StatelessWidget {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content:
-              Text('Bill split. £$halfAmount returned and £$halfAmount paid.'),
-        ),
+            content: Text(
+                'Bill split. £$halfAmount returned and £$halfAmount paid.')),
       );
 
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const TransactionsPage()),
-        (route) => false,
-      );
+      context.push('/');
     }
 
     return Scaffold(
@@ -71,11 +66,7 @@ class TransactionDetailsPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const TransactionsPage()),
-              (route) => false,
-            );
+            context.push('/');
           },
         ),
       ),
@@ -129,9 +120,8 @@ class TransactionDetailsPage extends StatelessWidget {
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content:
-                              Text('Repeating payment created for £$amount'),
-                        ),
+                            content:
+                                Text('Repeating payment created for £$amount')),
                       );
                     }
                   },

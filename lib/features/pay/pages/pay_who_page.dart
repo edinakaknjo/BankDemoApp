@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../common/cubit/transactions_cubit.dart';
 
-class PayWhoPage extends StatefulWidget {
-  const PayWhoPage({super.key});
+class PayWhoPage extends HookWidget {
+  final String amount;
+  final bool isTopUp;
 
-  @override
-  PayWhoPageState createState() => PayWhoPageState();
-}
-
-class PayWhoPageState extends State<PayWhoPage> {
-  final TextEditingController _controller = TextEditingController();
+  const PayWhoPage({
+    super.key,
+    required this.amount,
+    required this.isTopUp,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final String amount = args['amount'] as String;
-    final bool isTopUp = args['isTopUp'] as bool;
+    final TextEditingController controller = useTextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +38,7 @@ class PayWhoPageState extends State<PayWhoPage> {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: TextField(
-                  controller: _controller,
+                  controller: controller,
                   decoration: const InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
@@ -55,13 +54,13 @@ class PayWhoPageState extends State<PayWhoPage> {
               ElevatedButton(
                 onPressed: () {
                   BlocProvider.of<TransactionsCubit>(context).addTransaction(
-                    _controller.text,
+                    controller.text,
                     double.parse(amount),
                     isTopUp,
                   );
 
-                  Navigator.pushNamed(context, '/transaction_details',
-                      arguments: {'amount': amount, 'name': _controller.text});
+                  context.push('/transaction_details',
+                      extra: {'amount': amount, 'name': controller.text});
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
