@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../common/cubit/transactions_cubit.dart';
 
 class PayWhoPage extends HookWidget {
@@ -21,7 +22,10 @@ class PayWhoPage extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFC0028B),
-        title: const Text('MoneyApp', style: TextStyle(fontSize: 24)),
+        title: Text(
+          'app_name'.tr(),
+          style: const TextStyle(fontSize: 24),
+        ),
         centerTitle: true,
       ),
       backgroundColor: const Color(0xFFC0028B),
@@ -31,19 +35,19 @@ class PayWhoPage extends HookWidget {
           Column(
             children: [
               const SizedBox(height: 40),
-              const Text(
-                'To whom?',
-                style: TextStyle(fontSize: 24, color: Colors.white),
+              Text(
+                'to_whom'.tr(),
+                style: const TextStyle(fontSize: 24, color: Colors.white),
               ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: TextField(
                   controller: controller,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    hintText: 'Enter name',
-                    border: OutlineInputBorder(),
+                    hintText: 'enter_name'.tr(),
+                    border: const OutlineInputBorder(),
                   ),
                 ),
               ),
@@ -67,8 +71,11 @@ class PayWhoPage extends HookWidget {
                   padding:
                       const EdgeInsets.symmetric(vertical: 20, horizontal: 100),
                 ),
-                child: const Text('Pay',
-                    style: TextStyle(color: Color(0xFFC0028B), fontSize: 18)),
+                child: Text(
+                  'pay'.tr(),
+                  style:
+                      const TextStyle(color: Color(0xFFC0028B), fontSize: 18),
+                ),
               ),
               const SizedBox(height: 20),
             ],

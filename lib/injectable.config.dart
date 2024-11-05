@@ -17,7 +17,7 @@ import 'package:moneyapp/common/cubit/signup_cubit.dart' as _i534;
 import 'package:moneyapp/common/cubit/transactions_cubit.dart' as _i392;
 import 'package:moneyapp/common/firebase/firebase_module.dart' as _i567;
 import 'package:moneyapp/features/transactions/source/transaction_source.dart'
-    as _i448;
+    as _i373;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -35,11 +35,11 @@ extension GetItInjectableX on _i174.GetIt {
       () => firebaseModule.initializeFirebaseApp(),
       preResolve: true,
     );
-    gh.lazySingleton<_i448.ApiDataSource>(() => _i448.ApiDataSource());
-    gh.factory<_i392.TransactionsCubit>(
-        () => _i392.TransactionsCubit(gh<_i448.ApiDataSource>()));
+    gh.lazySingleton<_i373.ApiDataSource>(() => _i373.ApiDataSource());
     gh.singleton<_i59.FirebaseAuth>(
         () => firebaseModule.firebaseAuth(gh<_i982.FirebaseApp>()));
+    gh.factory<_i392.TransactionsCubit>(
+        () => _i392.TransactionsCubit(gh<_i373.ApiDataSource>()));
     gh.factory<_i814.LoginCubit>(
         () => _i814.LoginCubit(gh<_i59.FirebaseAuth>()));
     gh.factory<_i534.SignupCubit>(

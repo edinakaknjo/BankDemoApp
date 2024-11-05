@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/cubit/transactions_cubit.dart';
 import '../../../common/cubit/transactions_state.dart';
 import 'package:go_router/go_router.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class LoanPage extends StatefulWidget {
   const LoanPage({super.key});
@@ -26,8 +27,8 @@ class LoanPageState extends State<LoanPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFC0028B),
-        title: const Text('Loan Application',
-            style: TextStyle(color: Colors.white)),
+        title: Text('loan_application'.tr(),
+            style: const TextStyle(color: Colors.white)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -36,36 +37,34 @@ class LoanPageState extends State<LoanPage> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildTermsAndConditionsHeader(),
-              _buildTermsAndConditionsCheckbox(),
-              const SizedBox(height: 20),
-              _buildLoanFormSection(),
-            ],
-          ),
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildTermsAndConditionsHeader(),
+            _buildTermsAndConditionsCheckbox(),
+            const SizedBox(height: 20),
+            _buildLoanFormSection(),
+          ],
         ),
       ),
     );
   }
 
   Widget _buildTermsAndConditionsHeader() {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Terms and Conditions',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          'terms_and_conditions'.tr(),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Text(
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam elementum enim non neque luctus, nec blandit ipsum sagittis. Sed fringilla blandit nibh, sit amet suscipit massa sollicitudin lacinia. Donec cursus, odio sit amet tincidunt sodales, odio nisl hendrerit sem, tempor tincidunt ligula nisl nec ante. Nulla aliquet aliquam justo, ac bibendum orci rhoncus non. Nullam quis ex elementum, pharetra ligula eleifend, convallis nulla. Nulla sit amet nisi viverra, semper nunc eu, posuere dui. Donec at metus ut eros rhoncus vestibulum vitae at lacus. Etiam imperdiet, nulla ac condimentum aliquam, enim lacus fringilla leo, vel hendrerit mi ipsum et ante. Vivamus finibus mauris eget diam sodales, eget efficitur orci laoreet. Sed feugiat odio quis mattis tristique. Mauris sit amet sem mauris.',
-          style: TextStyle(fontSize: 16),
+          'terms_and_conditions_text'.tr(),
+          style: const TextStyle(fontSize: 16),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
       ],
     );
   }
@@ -81,10 +80,10 @@ class LoanPageState extends State<LoanPage> {
             });
           },
         ),
-        const Expanded(
+        Expanded(
           child: Text(
-            'Accept Terms & Conditions',
-            style: TextStyle(fontSize: 16),
+            'accept_terms_conditions'.tr(),
+            style: const TextStyle(fontSize: 16),
           ),
         ),
       ],
@@ -98,26 +97,26 @@ class LoanPageState extends State<LoanPage> {
         children: [
           _buildTextField(
             controller: _monthlySalaryController,
-            labelText: 'Monthly Salary',
-            validatorMessage: 'Please enter your monthly salary',
+            labelText: 'monthly_salary'.tr(),
+            validatorMessage: 'enter_monthly_salary'.tr(),
           ),
           const SizedBox(height: 16),
           _buildTextField(
             controller: _monthlyExpensesController,
-            labelText: 'Monthly Expenses',
-            validatorMessage: 'Please enter your monthly expenses',
+            labelText: 'monthly_expenses'.tr(),
+            validatorMessage: 'enter_monthly_expenses'.tr(),
           ),
           const SizedBox(height: 16),
           _buildTextField(
             controller: _loanAmountController,
-            labelText: 'Loan Amount',
-            validatorMessage: 'Please enter the loan amount',
+            labelText: 'loan_amount'.tr(),
+            validatorMessage: 'enter_loan_amount'.tr(),
           ),
           const SizedBox(height: 16),
           _buildTextField(
             controller: _termController,
-            labelText: 'Term',
-            validatorMessage: 'Please enter the loan term',
+            labelText: 'term'.tr(),
+            validatorMessage: 'enter_term'.tr(),
           ),
           const SizedBox(height: 20),
           _buildLoanButton(),
@@ -154,9 +153,8 @@ class LoanPageState extends State<LoanPage> {
           _showLoanDialog(context, state.loanApproved!);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                  'Error processing loan application. Please try again later.'),
+            SnackBar(
+              content: Text('loan_error'.tr()),
             ),
           );
         }
@@ -173,9 +171,9 @@ class LoanPageState extends State<LoanPage> {
                     _applyForLoan(context);
                   } else if (!_acceptedTerms) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content:
-                              Text('Please accept the Terms & Conditions')),
+                      SnackBar(
+                        content: Text('accept_terms_conditions_warning'.tr()),
+                      ),
                     );
                   }
                 },
@@ -184,7 +182,7 @@ class LoanPageState extends State<LoanPage> {
                   padding:
                       const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                 ),
-                child: const Text('Apply for Loan'),
+                child: Text('apply_for_loan'.tr()),
               ),
           ],
         );
@@ -206,18 +204,18 @@ class LoanPageState extends State<LoanPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(approved ? 'Yeeeyyy !! Congrats' : 'Ooopsss'),
+          title: Text(approved ? 'congrats_title'.tr() : 'oops_title'.tr()),
           content: Text(
             approved
-                ? 'Your application has been approved. Don’t tell your friends you have money!'
-                : 'Your application has been declined. It’s not your fault, it’s a financial crisis.',
+                ? 'loan_approved_message'.tr()
+                : 'loan_declined_message'.tr(),
           ),
           actions: [
             TextButton(
               onPressed: () {
                 context.go('/');
               },
-              child: const Text('OK'),
+              child: Text('ok'.tr()),
             ),
           ],
         );

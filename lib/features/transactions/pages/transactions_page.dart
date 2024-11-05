@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../common/cubit/transactions_cubit.dart';
 import '../../../common/cubit/transactions_state.dart';
 
@@ -16,9 +17,9 @@ class TransactionsPage extends StatelessWidget {
         backgroundColor: const Color(0xFFC0028B),
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'MoneyApp',
-          style: TextStyle(
+        title: Text(
+          'app_title'.tr(),
+          style: const TextStyle(
               fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
@@ -51,13 +52,13 @@ class TransactionsPage extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      _buildActionButton('Pay', 'assets/icons/phone_icon.svg',
-                          context, '/pay'),
-                      _buildActionButton('Top up',
+                      _buildActionButton('pay'.tr(),
+                          'assets/icons/phone_icon.svg', context, '/pay'),
+                      _buildActionButton('top_up'.tr(),
                           'assets/icons/wallet_icon.svg', context, '/pay',
                           isTopUp: true),
-                      _buildActionButton('Loan', 'assets/icons/loan_icon.svg',
-                          context, '/loan'),
+                      _buildActionButton('loan'.tr(),
+                          'assets/icons/loan_icon.svg', context, '/loan'),
                     ],
                   ),
                 )

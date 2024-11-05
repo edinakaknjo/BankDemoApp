@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PayPage extends HookWidget {
   final bool isTopUp;
@@ -34,9 +35,9 @@ class PayPage extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFC0028B),
-        title: const Text(
-          'MoneyApp',
-          style: TextStyle(fontSize: 24, color: Colors.white),
+        title: Text(
+          'app_name'.tr(),
+          style: const TextStyle(fontSize: 24, color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -48,9 +49,9 @@ class PayPage extends HookWidget {
             Column(
               children: [
                 const SizedBox(height: 40),
-                const Text(
-                  'How much?',
-                  style: TextStyle(fontSize: 24, color: Colors.white),
+                Text(
+                  'how_much'.tr(),
+                  style: const TextStyle(fontSize: 24, color: Colors.white),
                 ),
                 const SizedBox(height: 20),
                 Text(
@@ -77,9 +78,11 @@ class PayPage extends HookWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: 20, horizontal: 100),
                   ),
-                  child: Text(isTopUp ? 'Top Up Next' : 'Next',
-                      style: const TextStyle(
-                          color: Color(0xFFC0028B), fontSize: 18)),
+                  child: Text(
+                    isTopUp ? 'top_up_next'.tr() : 'next'.tr(),
+                    style:
+                        const TextStyle(color: Color(0xFFC0028B), fontSize: 18),
+                  ),
                 ),
                 const SizedBox(height: 20),
               ],

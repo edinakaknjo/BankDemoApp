@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:moneyapp/common/cubit/signup_cubit.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SignupPage extends HookWidget {
   const SignupPage({super.key});
@@ -15,12 +16,12 @@ class SignupPage extends HookWidget {
     try {
       await cubit.signup(emailController.text, passwordController.text);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('You are registered! Please log in.')),
+        SnackBar(content: Text('signup_success'.tr())),
       );
       Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Registration failed. Please try again.')),
+        SnackBar(content: Text('signup_failed'.tr())),
       );
     }
   }
@@ -41,14 +42,14 @@ class SignupPage extends HookWidget {
             children: <Widget>[
               TextField(
                 controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
+                decoration: InputDecoration(
+                  labelText: 'email_hint'.tr(),
                 ),
               ),
               TextField(
                 controller: passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
+                decoration: InputDecoration(
+                  labelText: 'password_hint'.tr(),
                 ),
                 obscureText: true,
               ),
@@ -58,7 +59,7 @@ class SignupPage extends HookWidget {
                   final cubit = context.read<SignupCubit>();
                   _signup(context, cubit, emailController, passwordController);
                 },
-                child: const Text('Sign Up'),
+                child: Text('signup_button'.tr()),
               ),
             ],
           ),

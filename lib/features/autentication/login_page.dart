@@ -6,6 +6,7 @@ import 'package:moneyapp/common/cubit/login_cubit.dart';
 import 'package:moneyapp/common/cubit/login_state.dart';
 import 'package:moneyapp/injectable.dart';
 import 'package:moneyapp/router/go_router.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class LoginPage extends HookWidget {
   const LoginPage({super.key});
@@ -23,8 +24,7 @@ class LoginPage extends HookWidget {
           listener: (context, state) {
             if (state is LoginFailure) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                    content: Text('Login failed. Please try again.')),
+                SnackBar(content: Text('login_failed'.tr())),
               );
             }
           },
@@ -33,15 +33,15 @@ class LoginPage extends HookWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('LOG IN',
-                    style: TextStyle(fontSize: 32, color: Colors.white)),
+                Text('login_title'.tr(),
+                    style: const TextStyle(fontSize: 32, color: Colors.white)),
                 const SizedBox(height: 20),
                 TextField(
                   controller: emailController,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.grey[200],
-                    hintText: 'Email',
+                    hintText: 'email_hint'.tr(),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -50,7 +50,7 @@ class LoginPage extends HookWidget {
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.grey[200],
-                    hintText: 'Password',
+                    hintText: 'password_hint'.tr(),
                   ),
                   obscureText: true,
                 ),
@@ -64,14 +64,14 @@ class LoginPage extends HookWidget {
                       AppRouter.router.push('/');
                     } catch (e) {}
                   },
-                  child: const Text('Log in'),
+                  child: Text('login_button'.tr()),
                 ),
                 TextButton(
                   onPressed: () {
                     context.push(AppRouter.signup);
                   },
-                  child: const Text('Sign up',
-                      style: TextStyle(color: Colors.white)),
+                  child: Text('signup_button'.tr(),
+                      style: const TextStyle(color: Colors.white)),
                 ),
               ],
             ),
