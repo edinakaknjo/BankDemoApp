@@ -1,16 +1,40 @@
-# moneyapp
+# 💸 MoneyApp
 
-A new Flutter project.
+A sleek and modern mobile app built with Flutter for sending payments, topping up, and applying for loans. The app is designed featuring a clean interface and intuitive flow for handling personal finances.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+![MoneyApp Screenshot](./MoneyApp.png)
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🚀 Features
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- 💰 **Pay**, **Top up**, and **Loan** options
+- 📋 Transaction history with amount tracking
+- 📱 Easy input for amount and recipient
+- 🧾 Add receipt and split payments
+- 🔁 Repeating payment toggle
+- 📄 Loan application form with terms & conditions
+
+---
+
+## 🛠 Technologies Used
+
+- **Flutter** – UI toolkit for building natively compiled applications
+- **Dart** – Programming language optimized for building UI
+- **Material Design** – Clean and intuitive interface
+- **State Management** – (e.g., Provider, setState – depending on your implementation)
+- **Responsive UI** – Works on various screen sizes
+
+---
+
+## 📦 Getting Started
+
+To run this project locally:
+
+```bash
+git clone https://github.com/yourusername/moneyapp.git
+cd moneyapp
+flutter pub get
+flutter run
