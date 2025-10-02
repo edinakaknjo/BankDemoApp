@@ -1,4 +1,4 @@
-# 💸 MoneyApp
+# MoneyApp
 
 A sleek and modern mobile app built with Flutter for sending payments, topping up, and applying for loans. The app is designed featuring a clean interface and intuitive flow for handling personal finances.
 
@@ -8,18 +8,18 @@ A sleek and modern mobile app built with Flutter for sending payments, topping u
 
 ---
 
-## 🚀 Features
+##  Features
 
-- 💰 **Pay**, **Top up**, and **Loan** options
-- 📋 Transaction history with amount tracking
-- 📱 Easy input for amount and recipient
-- 🧾 Add receipt and split payments
-- 🔁 Repeating payment toggle
-- 📄 Loan application form with terms & conditions
+-  **Pay**, **Top up**, and **Loan** options
+-  Transaction history with amount tracking
+- Easy input for amount and recipient
+-  Add receipt and split payments
+-  Repeating payment toggle
+-  Loan application form with terms & conditions
 
 ---
 
-## 🛠 Technologies Used
+##  Technologies Used
 
 - **Flutter** – UI toolkit for building natively compiled applications
 - **Dart** – Programming language optimized for building UI
@@ -29,7 +29,7 @@ A sleek and modern mobile app built with Flutter for sending payments, topping u
 
 ---
 
-## 📦 Getting Started
+##  Getting Started
 
 To run this project locally:
 
